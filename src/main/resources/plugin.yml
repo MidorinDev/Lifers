@@ -1,0 +1,14 @@
+name: Lifers
+version: ${project.version}
+main: life.midorin.info.lifers.Lifers
+
+commands:
+  land:
+    description: 土地管理システム
+    aliases:
+      - l
+      - lands
+  join:
+    description: Private
+  leave:
+    description: Private
