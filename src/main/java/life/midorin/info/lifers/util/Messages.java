@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 public class Messages
 {
-    public static final String PREFIX = ChatColor.WHITE + "[" + ChatColor.GREEN + "LifeHelper" + ChatColor.WHITE + "] ";
+    public static final String PREFIX = ChatColor.WHITE + "[" + ChatColor.GREEN + "Lifers" + ChatColor.WHITE + "] ";
     public static void sendPermissionError(CommandSender sender)
     {
         sender.sendMessage(PREFIX + ChatColor.RED + "実行する権限がありません。");

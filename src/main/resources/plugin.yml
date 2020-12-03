@@ -1,6 +1,7 @@
 name: Lifers
 version: ${project.version}
 main: life.midorin.info.lifers.Lifers
+depend: [Jecon,WorldEdit,WorldGuard]
 
 commands:
   land:
@@ -8,6 +9,12 @@ commands:
     aliases:
       - l
       - lands
+  xyz:
+    description: 座標を取得するコマンド
+  lock:
+    description: Lock
+  unlock:
+    description: unLock
   join:
     description: Private
   leave:
