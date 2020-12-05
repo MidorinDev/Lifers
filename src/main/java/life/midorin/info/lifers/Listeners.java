@@ -1,12 +1,12 @@
 package life.midorin.info.lifers;
 
+import life.midorin.info.lifers.manager.LandManager;
 import life.midorin.info.lifers.util.Datas;
+import life.midorin.info.lifers.util.Land;
+import life.midorin.info.lifers.util.MaterialType;
 import life.midorin.info.lifers.util.Messages;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -134,12 +134,19 @@ public class Listeners implements Listener
             Lifers.player_data.get(p).add("[door-" + b + "]");
             p.sendMessage(Messages.PREFIX + ChatColor.YELLOW + "ドアを登録しました。");
         }
-        else if (b.getType() == Material.CHEST)
-        {
-            if (!Lifers.player_data.containsKey(p)) Lifers.player_data.put(p, new ArrayList<>());
-            Lifers.player_data.get(p).add("T:CHEST X:" + b.getX() + " Y:" + b.getY() + " Z:" + b.getZ());
+        else if (b.getType() == Material.CHEST) {
+
+            if (alreadyLand(b.getLocation())) {
+                Messages.sendMessageToOp(ChatColor.RED + "既に登録されています");
+                return;
+            }
+
+            //if (!Lifers.player_data.containsKey(p)) Lifers.player_data.put(p, new ArrayList<>());
+            //Lifers.player_data.get(p).add("T:CHEST X:" + b.getX() + " Y:" + b.getY() + " Z:" + b.getZ());
+            Land.create(p.getName(), p.getUniqueId().toString(), b.getLocation(), MaterialType.CHEST);
             p.sendMessage(Messages.PREFIX + ChatColor.YELLOW + "チェストを登録しました。");
         }
+
     }
 
     @EventHandler
@@ -154,12 +161,21 @@ public class Listeners implements Listener
         }
         else if (b.getType() == Material.CHEST)
         {
-            if (Lifers.player_data.get(p).contains("T:CHEST X:" + b.getX() + " Y:" + b.getY() + " Z:" + b.getZ()))
-            {
-                Lifers.player_data.get(p).remove("T:CHEST X:" + b.getX() + " Y:" + b.getY() + " Z:" + b.getZ());
-                p.sendMessage(Messages.PREFIX + ChatColor.RED + "チェストの登録を解除しました。");
+            Land land = LandManager.get().getLand(b.getLocation());
+            if(land == null) return;
+
+            if(!p.getUniqueId().toString().contains(land.getUuid())) {
+                e.setCancelled(true);
+                p.sendMessage(Messages.PREFIX + ChatColor.RED + "所有者以外は破壊できません。");
+                return;
             }
-            else p.sendMessage(Messages.PREFIX + ChatColor.RED + "所有者以外は破壊できません。");
+
+            //Lifers.player_data.get(p).remove("T:CHEST X:" + b.getX() + " Y:" + b.getY() + " Z:" + b.getZ());
+            land.delete();
+            p.sendMessage(Messages.PREFIX + ChatColor.RED + "チェストの登録を解除しました。");
+
+
+
         }
     }
 
@@ -218,12 +234,26 @@ public class Listeners implements Listener
                 state.update();
                 player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 100, (float) 0.945);
             }
-            else if (clicked.getType() == Material.CHEST)
+            else if (clicked.getType() == Material.CHEST) {
+                Land land = LandManager.get().getLand(clicked.getLocation());
+                if(land == null) return;
+
+                if(!player.getUniqueId().toString().contains(land.getUuid())) {
+                    player.sendMessage(Messages.PREFIX + ChatColor.RED + "チェストの所有者以外はチェストを開けません。");
+                    e.setCancelled(true);
+                }
+            }
+/*
+
                 if (!Lifers.player_data.get(player).contains("T:CHEST X:" + clicked.getX() + " Y:" + clicked.getY() + " Z:" + clicked.getZ()))
                 {
                     e.setCancelled(true);
                     player.sendMessage(Messages.PREFIX + ChatColor.RED + "チェストの所有者以外はチェストを開けません。");
-                }
+                }*/
         }
+    }
+
+    private static boolean alreadyLand(Location location) {
+        return LandManager.get().isProtect(location);
     }
 }

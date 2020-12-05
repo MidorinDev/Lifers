@@ -3,20 +3,30 @@ package life.midorin.info.lifers;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import jp.jyn.jecon.Jecon;
 import life.midorin.info.lifers.commands.*;
+import life.midorin.info.lifers.manager.DatabaseManager;
 import life.midorin.info.lifers.util.CustomConfig;
 import life.midorin.info.lifers.util.Datas;
+import life.midorin.info.lifers.util.Utils;
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
 public final class Lifers extends JavaPlugin
 {
-    public static JavaPlugin plugin;
+    public static Lifers plugin;
     public static Jecon jecon;
     public static WorldGuardPlugin guard;
 
@@ -26,6 +36,10 @@ public final class Lifers extends JavaPlugin
     public void onEnable()
     {
         plugin = this;
+
+        //データベースをセットアップ
+        setup();
+
         Bukkit.getPluginManager().registerEvents(new Listeners(), this);
 
         Plugin JPlugin = Bukkit.getPluginManager().getPlugin("Jecon");
@@ -69,6 +83,9 @@ public final class Lifers extends JavaPlugin
     @Override
     public void onDisable()
     {
+        //データベースをシャットダウン
+        shutdown();
+
         for (Player player : player_data.keySet())
         {
             String name = player.getName();
@@ -78,7 +95,19 @@ public final class Lifers extends JavaPlugin
         catch (IOException e) { e.printStackTrace(); }
     }
 
-    public static JavaPlugin getPlugin()
+    public void setup() {
+        try {
+            DatabaseManager.get().setup(false);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+
+    public void shutdown() {
+        DatabaseManager.get().shutdown();
+    }
+
+    public static Lifers getPlugin()
     {
         return plugin;
     }
