@@ -117,36 +117,29 @@ public class Listeners implements Listener
     }
 
     @EventHandler
-    public void onBlockPlace(BlockPlaceEvent e)
-    {
+    public void onBlockPlace(BlockPlaceEvent e) {
         Block b = e.getBlock();
         Player p = e.getPlayer();
-        if (b.getType() == Material.TNT || b.getType() == Material.LAVA_BUCKET || b.getType() == Material.LAVA)
-        {
+        if (b.getType() == Material.TNT || b.getType() == Material.LAVA_BUCKET || b.getType() == Material.LAVA) {
             e.setCancelled(true);
-            Bukkit.broadcastMessage(Messages.PREFIX + ChatColor.RED +  p.getName() + "さんが禁止ブロックを設置しようとしました。");
+            Bukkit.broadcastMessage(Messages.PREFIX + ChatColor.RED + p.getName() + "さんが禁止ブロックを設置しようとしました。");
             Messages.sendMessageToOp(ChatColor.GRAY + "[Log] " + p.getName() + " : Place " + " | " + b.getX() + " " + b.getY() + " " + b.getZ());
             p.kickPlayer("禁止ブロックの無断設置");
-        }
-        else if (b.getType() == Material.IRON_DOOR_BLOCK)
-        {
+        } else if (b.getType() == Material.IRON_DOOR_BLOCK) {
             if (!Lifers.player_data.containsKey(p)) Lifers.player_data.put(p, new ArrayList<>());
             Lifers.player_data.get(p).add("[door-" + b + "]");
             p.sendMessage(Messages.PREFIX + ChatColor.YELLOW + "ドアを登録しました。");
-        }
-        else if (b.getType() == Material.CHEST) {
+        } else if (b.getType() == Material.CHEST) {
 
             if (alreadyLand(b.getLocation())) {
                 Messages.sendMessageToOp(ChatColor.RED + "既に登録されています");
                 return;
             }
 
-            //if (!Lifers.player_data.containsKey(p)) Lifers.player_data.put(p, new ArrayList<>());
-            //Lifers.player_data.get(p).add("T:CHEST X:" + b.getX() + " Y:" + b.getY() + " Z:" + b.getZ());
             Land.create(p.getName(), p.getUniqueId().toString(), b.getLocation(), MaterialType.CHEST);
             p.sendMessage(Messages.PREFIX + ChatColor.YELLOW + "チェストを登録しました。");
-        }
 
+        }
     }
 
     @EventHandler
@@ -170,11 +163,8 @@ public class Listeners implements Listener
                 return;
             }
 
-            //Lifers.player_data.get(p).remove("T:CHEST X:" + b.getX() + " Y:" + b.getY() + " Z:" + b.getZ());
             land.delete();
             p.sendMessage(Messages.PREFIX + ChatColor.RED + "チェストの登録を解除しました。");
-
-
 
         }
     }
@@ -216,14 +206,11 @@ public class Listeners implements Listener
     ***/
 
     @EventHandler
-    public void onRightClickEvent(PlayerInteractEvent e)
-    {
+    public void onRightClickEvent(PlayerInteractEvent e) {
         Player player = e.getPlayer();
         Block clicked = e.getClickedBlock();
-        if (e.getHand().equals(EquipmentSlot.HAND) && e.getAction() == Action.RIGHT_CLICK_BLOCK)
-        {
-            if (clicked.getType() == Material.IRON_DOOR_BLOCK)
-            {
+        if (e.getHand().equals(EquipmentSlot.HAND) && e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (clicked.getType() == Material.IRON_DOOR_BLOCK) {
                 BlockState state = clicked.getState();
                 Door door = (Door) state.getData();
 
@@ -233,23 +220,15 @@ public class Listeners implements Listener
                 state.setData((MaterialData) openable);
                 state.update();
                 player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 100, (float) 0.945);
-            }
-            else if (clicked.getType() == Material.CHEST) {
+            } else if (clicked.getType() == Material.CHEST) {
                 Land land = LandManager.get().getLand(clicked.getLocation());
-                if(land == null) return;
+                if (land == null) return;
 
-                if(!player.getUniqueId().toString().contains(land.getUuid())) {
+                if (!player.getUniqueId().toString().contains(land.getUuid())) {
                     player.sendMessage(Messages.PREFIX + ChatColor.RED + "チェストの所有者以外はチェストを開けません。");
                     e.setCancelled(true);
                 }
             }
-/*
-
-                if (!Lifers.player_data.get(player).contains("T:CHEST X:" + clicked.getX() + " Y:" + clicked.getY() + " Z:" + clicked.getZ()))
-                {
-                    e.setCancelled(true);
-                    player.sendMessage(Messages.PREFIX + ChatColor.RED + "チェストの所有者以外はチェストを開けません。");
-                }*/
         }
     }
 
