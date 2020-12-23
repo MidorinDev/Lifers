@@ -1,35 +1,41 @@
-package life.midorin.info.lifers.util;
+package life.midorin.info.lifers.protect;
 
-import life.midorin.info.lifers.Lifers;
 import life.midorin.info.lifers.manager.DatabaseManager;
+import life.midorin.info.lifers.util.MaterialType;
+import life.midorin.info.lifers.util.SQLQuery;
+import life.midorin.info.lifers.util.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Land {
+public class Protect {
 
     private final String uuid,owner;
     private final World world;
     private final double x, y, z;
-    private final MaterialType type;
+    private final Block block;
 
     private int id;
 
-    public Land(String owner, String uuid, Location location, MaterialType material, int id) {
+    public Protect(String owner, String uuid, Location location, int id) {
         this.owner = owner;
         this.uuid = uuid;
-        this.type = material;
-        this.world = location.getWorld();
-        this.x = location.getX();
-        this.y = location.getY();
-        this.z = location.getZ();
+        this.block = location.getBlock();
+        this.world = block.getWorld();
+        this.x = block.getX();
+        this.y = block.getY();
+        this.z = block.getZ();
         this.id = id;
     }
 
-    public static void create(String owner, String uuid, Location location, MaterialType type) {
-        new Land(owner, uuid, location, type, -1).create();
+    public static void create(String owner, String uuid, Location loc) {
+        new Protect(owner, uuid, loc, -1).create();
     }
 
     public void create() {
@@ -40,11 +46,11 @@ public class Land {
 
         if (uuid == null) return;
 
-        if(getType() != MaterialType.DOOR) {
+        if(getBlock().getType() != Material.WOOD_DOOR) {
             try {
-                DatabaseManager.get().executeStatement(SQLQuery.INSERT_LAND, getOwner(), getUuid(), getWorld().getName(), getX(), getY(), getZ(),getType().name());
+                DatabaseManager.get().executeStatement(SQLQuery.INSERT_PROTECTED_BLOCK, owner, uuid, world.getName(), x, y, z, block.getType().name());
 
-                try (ResultSet rs = DatabaseManager.get().executeResultStatement(SQLQuery.SELECT_EXACT_LAND, getUuid(), getType().name(), getWorld().getName(), getX(), getY(), getZ())) {
+                try (ResultSet rs = DatabaseManager.get().executeResultStatement(SQLQuery.SELECT_EXACT_PROTECTED_BLOCK, uuid, block.getType().name(), world.getName(), x, y, z)) {
                     if (rs.next()) {
                         id = rs.getInt("id");
                     } else {
@@ -67,7 +73,7 @@ public class Land {
         if (id == -1) {
             return;
         }
-        DatabaseManager.get().executeStatement(SQLQuery.DELETE_LAND, getId());
+        DatabaseManager.get().executeStatement(SQLQuery.DELETE_PROTECTED_BLOCK, id);
     }
 
     public String getOwner() {
@@ -78,8 +84,8 @@ public class Land {
         return uuid;
     }
 
-    public MaterialType getType() {
-        return type;
+    public Block getBlock() {
+        return block;
     }
 
     public World getWorld() {
@@ -100,5 +106,9 @@ public class Land {
 
     public int getId() {
         return id;
+    }
+
+    public boolean isOwner(String player) {
+        return this.owner.equals(player);
     }
 }

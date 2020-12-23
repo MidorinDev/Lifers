@@ -1,6 +1,6 @@
 package life.midorin.info.lifers.commands;
 
-import life.midorin.info.lifers.LandGUI;
+import life.midorin.info.lifers.menu.LandGUI;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

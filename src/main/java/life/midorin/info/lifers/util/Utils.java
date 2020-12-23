@@ -1,6 +1,6 @@
 package life.midorin.info.lifers.util;
 
-import life.midorin.info.lifers.Lifers;
+import life.midorin.info.lifers.LifersPlugin;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.ChatColor;
@@ -15,7 +15,7 @@ public class Utils {
 
     public static void debug(Object msg) {
         if (true) {
-            Utils.log("§8[§cLifers§8] §cDebug: §7" + msg.toString());
+            Utils.log("§8[§cLifersPlugin§8] §cDebug: §7" + msg.toString());
         }
         debugToFile(msg);
     }
@@ -43,7 +43,7 @@ public class Utils {
     }
 
     private static void debugToFile(Object msg) {
-        File debugFile = new File(Lifers.getPlugin().getDataFolder(), "logs/latest.log");
+        File debugFile = new File(LifersPlugin.getPlugin().getDataFolder(), "logs/latest.log");
         if (!debugFile.exists()) {
             System.out.print("Seems that a problem has occurred while creating the latest.log file in the startup.");
             try {
@@ -66,14 +66,14 @@ public class Utils {
     public static void log(String message, int severity) {
         switch (severity) {
             case 1:
-                Lifers.getPlugin().getLogger().warning(message);
+                LifersPlugin.getPlugin().getLogger().warning(message);
                 break;
             case 2:
-                Lifers.getPlugin().getLogger().severe("! " + message);
+                LifersPlugin.getPlugin().getLogger().severe("! " + message);
                 break;
             case 0:
             default:
-                Lifers.getPlugin().getLogger().info(message);
+                LifersPlugin.getPlugin().getLogger().info(message);
                 break;
         }
     }
@@ -81,7 +81,7 @@ public class Utils {
     public static void logToFile(String message) {
 
         try {
-            File saveTo = new File(Lifers.getPlugin().getDataFolder(), "debug.log");
+            File saveTo = new File(LifersPlugin.getPlugin().getDataFolder(), "debug.log");
             if (!saveTo.exists()) {
                 saveTo.createNewFile();
             }

@@ -1,7 +1,6 @@
 package life.midorin.info.lifers.commands;
 
-import life.midorin.info.lifers.Lifers;
-
+import life.midorin.info.lifers.LifersPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -19,7 +18,7 @@ public class Leave implements CommandExecutor
         if (sender.hasPermission("Lifers.leave"))
         {
             for (Player au : Bukkit.getOnlinePlayers())
-                au.hidePlayer(Lifers.plugin, p);
+                au.hidePlayer(LifersPlugin.getPlugin(), p);
             p.setGameMode(GameMode.SPECTATOR);
             Bukkit.broadcastMessage(ChatColor.WHITE + "[" + ChatColor.RED + "Quit" + ChatColor.WHITE + "] " + ChatColor.GRAY + p.getName());
         }

@@ -1,7 +1,6 @@
 package life.midorin.info.lifers.manager;
 
 import com.zaxxer.hikari.HikariDataSource;
-import life.midorin.info.lifers.Lifers;
 import life.midorin.info.lifers.util.DynamicDataSource;
 import life.midorin.info.lifers.util.SQLQuery;
 import life.midorin.info.lifers.util.Utils;
@@ -46,7 +45,7 @@ public class DatabaseManager {
             return;
         }
 
-        executeStatement(SQLQuery.CREATE_TABLE_LAND);
+        executeStatement(SQLQuery.CREATE_TABLE_PROTECTED_BLOCKS);
 
     }
 
@@ -100,7 +99,7 @@ public class DatabaseManager {
         } catch (SQLException ex) {
             Utils.log(
                     "データベースのステートメントを実行すると予期しないエラーが発生しました。\n"
-                            + "プラグイン/Lifers/logs/latest.logファイルをチェックして報告してください。 "
+                            + "plugins/Lifers/logs/latest.logファイルをチェックして報告してください。 "
             );
             Utils.debug("Query: \n" + sql);
             Utils.debugSqlException(ex);

@@ -1,7 +1,6 @@
 package life.midorin.info.lifers.commands;
 
-import life.midorin.info.lifers.Lifers;
-
+import life.midorin.info.lifers.LifersPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -19,7 +18,7 @@ public class Join implements CommandExecutor
         if (sender.hasPermission("Lifers.join"))
         {
             for (Player au : Bukkit.getOnlinePlayers())
-                au.showPlayer(Lifers.plugin, p);
+                au.showPlayer(LifersPlugin.getPlugin(), p);
             p.setGameMode(GameMode.CREATIVE);
             Bukkit.broadcastMessage(ChatColor.WHITE + "[" + ChatColor.AQUA + "Join" + ChatColor.WHITE + "] " + ChatColor.GRAY + p.getName());
         }

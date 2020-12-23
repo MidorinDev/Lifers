@@ -1,6 +1,6 @@
 name: Lifers
 version: ${project.version}
-main: life.midorin.info.lifers.Lifers
+main: life.midorin.info.lifers.LifersPlugin
 depend: [Jecon,WorldEdit,WorldGuard]
 
 commands:

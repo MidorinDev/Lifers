@@ -1,4 +1,4 @@
-package life.midorin.info.lifers;
+package life.midorin.info.lifers.menu;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

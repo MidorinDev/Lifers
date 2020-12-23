@@ -1,7 +1,6 @@
 package life.midorin.info.lifers.manager;
 
-import life.midorin.info.lifers.Lifers;
-import life.midorin.info.lifers.util.Land;
+import life.midorin.info.lifers.protect.Protect;
 import life.midorin.info.lifers.util.MaterialType;
 import life.midorin.info.lifers.util.SQLQuery;
 import life.midorin.info.lifers.util.Utils;
@@ -12,36 +11,36 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class LandManager {
+public class ProtectManager {
 
 
-    private static LandManager instance = null;
-    private final Set<Land> lands = Collections.synchronizedSet(new HashSet<>());
+    private static ProtectManager instance = null;
+    private final Set<Protect> protects = Collections.synchronizedSet(new HashSet<>());
     private final Set<String> cached = Collections.synchronizedSet(new HashSet<>());
 
-    public static synchronized LandManager get() {
-        return instance == null ? instance = new LandManager() : instance;
+    public static synchronized ProtectManager get() {
+        return instance == null ? instance = new ProtectManager() : instance;
     }
 
-    public Land getLand(Location location) {
-        List<Land> lands = getLands(location);
-        return lands.isEmpty() ? null : lands.get(0);
+    public Protect getProtected_Block(Location location) {
+        List<Protect> protects = getProtected_Blocks(location);
+        return protects.isEmpty() ? null : protects.get(0);
     }
 
-    public List<Land> getLands(Location location ) {
-        List<Land> ptList = new ArrayList<>();
+    public List<Protect> getProtected_Blocks(Location location ) {
+        List<Protect> ptList = new ArrayList<>();
 
             try (ResultSet rs = DatabaseManager.get().executeResultStatement(
-                    SQLQuery.SELECT_LANDS,
+                    SQLQuery.SELECT_PROTECTED_BLOCK,
                     location.getWorld().getName(),
                     location.getX(),
                     location.getY(),
                     location.getZ()))
             {
                 while (rs.next()) {
-                    Land land  = getLandFromResultSet(rs);
+                    Protect protect = getLandFromResultSet(rs);
 
-                        ptList.add(land);
+                        ptList.add(protect);
                 }
             } catch (SQLException ex) {
                 Utils.debugSqlException(ex);
@@ -52,18 +51,17 @@ public class LandManager {
     }
 
     public boolean isProtect(Location location) {
-        return getLand(location) != null;
+        return getProtected_Block(location) != null;
     }
 
-    public Land getLandFromResultSet(ResultSet rs) throws SQLException {
-        return new Land(
+    public Protect getLandFromResultSet(ResultSet rs) throws SQLException {
+        return new Protect(
                 rs.getString("name"),
                 rs.getString("uuid"),
                 new Location(Bukkit.getWorld(rs.getString("world")),
                         rs.getLong("x"),
                         rs.getLong("y"),
                         rs.getLong("z")),
-                MaterialType.valueOf(rs.getString("materialType")),
                 rs.getInt("id"));
     }
 

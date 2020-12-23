@@ -1,8 +1,9 @@
-package life.midorin.info.lifers;
+package life.midorin.info.lifers.listeners;
 
-import life.midorin.info.lifers.manager.LandManager;
-import life.midorin.info.lifers.util.Datas;
-import life.midorin.info.lifers.util.Land;
+import life.midorin.info.lifers.menu.Items;
+import life.midorin.info.lifers.menu.LandGUI;
+import life.midorin.info.lifers.manager.ProtectManager;
+import life.midorin.info.lifers.protect.Protect;
 import life.midorin.info.lifers.util.MaterialType;
 import life.midorin.info.lifers.util.Messages;
 
@@ -19,8 +20,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Door;
@@ -32,22 +31,7 @@ import java.util.List;
 
 public class Listeners implements Listener
 {
-    List<Player> setting_list = new ArrayList<Player>();
-
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e)
-    {
-        Player p = e.getPlayer();
-        e.setJoinMessage(ChatColor.WHITE + "[" + ChatColor.AQUA + "Join" + ChatColor.WHITE + "] " + ChatColor.GRAY + p.getName());
-        Datas.setLocker(p);
-    }
-
-    @EventHandler
-    public void onQuit(PlayerQuitEvent e)
-    {
-        Player p = e.getPlayer();
-        e.setQuitMessage(ChatColor.WHITE + "[" + ChatColor.RED + "Quit" + ChatColor.WHITE + "] " + ChatColor.GRAY + p.getName());
-    }
+/*    List<Player> setting_list = new ArrayList<Player>();
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e)
@@ -81,8 +65,8 @@ public class Listeners implements Listener
             if (item.getItemMeta().getDisplayName().equals(Items.green_wool.getItemMeta().getDisplayName()) && item.getType() == Items.green_wool.getType())
             {
                 clicker.closeInventory();
-                if (!Lifers.player_data.containsKey(clicker)) Lifers.player_data.put(clicker, new ArrayList<>());
-                Lifers.player_data.get(clicker).add("data" + i);
+                //if (!Lifers.player_data.containsKey(clicker)) Lifers.player_data.put(clicker, new ArrayList<>());
+                //Lifers.player_data.get(clicker).add("data" + i);
                 i = i + 1;
                 System.out.println(i);
             }
@@ -126,17 +110,17 @@ public class Listeners implements Listener
             Messages.sendMessageToOp(ChatColor.GRAY + "[Log] " + p.getName() + " : Place " + " | " + b.getX() + " " + b.getY() + " " + b.getZ());
             p.kickPlayer("禁止ブロックの無断設置");
         } else if (b.getType() == Material.IRON_DOOR_BLOCK) {
-            if (!Lifers.player_data.containsKey(p)) Lifers.player_data.put(p, new ArrayList<>());
-            Lifers.player_data.get(p).add("[door-" + b + "]");
+            //if (!Lifers.player_data.containsKey(p)) Lifers.player_data.put(p, new ArrayList<>());
+            //Lifers.player_data.get(p).add("[door-" + b + "]");
             p.sendMessage(Messages.PREFIX + ChatColor.YELLOW + "ドアを登録しました。");
         } else if (b.getType() == Material.CHEST) {
 
-            if (alreadyLand(b.getLocation())) {
+            if (isProtect(b.getLocation())) {
                 Messages.sendMessageToOp(ChatColor.RED + "既に登録されています");
                 return;
             }
 
-            Land.create(p.getName(), p.getUniqueId().toString(), b.getLocation(), MaterialType.CHEST);
+            Protect.create(p.getName(), p.getUniqueId().toString(), b.getLocation(), MaterialType.CHEST);
             p.sendMessage(Messages.PREFIX + ChatColor.YELLOW + "チェストを登録しました。");
 
         }
@@ -149,27 +133,27 @@ public class Listeners implements Listener
         Player p = e.getPlayer();
         if (b.getType() == Material.IRON_DOOR_BLOCK)
         {
-            Lifers.player_data.get(p).remove("[door-" + b + "]");
+            //Lifers.player_data.get(p).remove("[door-" + b + "]");
             p.sendMessage(Messages.PREFIX + ChatColor.RED + "ドアの登録を解除しました。");
         }
         else if (b.getType() == Material.CHEST)
         {
-            Land land = LandManager.get().getLand(b.getLocation());
-            if(land == null) return;
+            Protect protect = ProtectManager.get().getLand(b.getLocation());
+            if(protect == null) return;
 
-            if(!p.getUniqueId().toString().contains(land.getUuid())) {
+            if(!p.getUniqueId().toString().contains(protect.getUuid())) {
                 e.setCancelled(true);
                 p.sendMessage(Messages.PREFIX + ChatColor.RED + "所有者以外は破壊できません。");
                 return;
             }
 
-            land.delete();
+            protect.delete();
             p.sendMessage(Messages.PREFIX + ChatColor.RED + "チェストの登録を解除しました。");
 
         }
     }
 
-    /***
+    *//***
     @EventHandler
     public void onRightClickEvent(PlayerInteractEvent e)
     {
@@ -203,7 +187,7 @@ public class Listeners implements Listener
             }
         }
     }
-    ***/
+    ***//*
 
     @EventHandler
     public void onRightClickEvent(PlayerInteractEvent e) {
@@ -221,18 +205,14 @@ public class Listeners implements Listener
                 state.update();
                 player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 100, (float) 0.945);
             } else if (clicked.getType() == Material.CHEST) {
-                Land land = LandManager.get().getLand(clicked.getLocation());
-                if (land == null) return;
+                Protect protect = ProtectManager.get().getLand(clicked.getLocation());
+                if (protect == null) return;
 
-                if (!player.getUniqueId().toString().contains(land.getUuid())) {
+                if (!player.getUniqueId().toString().contains(protect.getUuid())) {
                     player.sendMessage(Messages.PREFIX + ChatColor.RED + "チェストの所有者以外はチェストを開けません。");
                     e.setCancelled(true);
                 }
             }
         }
-    }
-
-    private static boolean alreadyLand(Location location) {
-        return LandManager.get().isProtect(location);
-    }
+    }*/
 }
