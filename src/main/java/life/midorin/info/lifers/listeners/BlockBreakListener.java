@@ -17,15 +17,24 @@ public class BlockBreakListener implements Listener {
         final Block block = e.getBlock();
 
         //保護されているブロックか？
-        if(ProtectManager.get().isProtect(block.getLocation())) return;
+        if(!ProtectManager.get().isProtect(block.getLocation())) return;
 
         final Protect protect = ProtectManager.get().getProtected_Block(block.getLocation());
 
-        //オーナーであるか
-        if(!protect.isOwner(player.getName())) e.setCancelled(true);
+        if(protect == null) return;
+
+        //オーナーではないならキャンセル
+        if(!protect.isOwner(player.getName())) {
+
+            player.sendMessage("オーナー以外は破壊できません");
+            e.setCancelled(true);
+            return;
+        }
 
         //保護を解除
         protect.delete();
+
+        player.sendMessage("保護を削除しました");
 
         return;
     }

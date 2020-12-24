@@ -6,11 +6,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
+import org.bukkit.block.DoubleChest;
 import org.bukkit.block.data.type.Switch;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.material.Door;
 
@@ -19,12 +22,15 @@ import java.lang.management.MonitorInfo;
 public class PlayerInteract implements Listener {
 
     @EventHandler
-    public void onPlayerInteract(PlayerInteractEvent event) {
+    public void onPlayerInteract(PlayerInteractEvent e) {
 
-        final Player player = event.getPlayer();
-        Block block = event.getClickedBlock();
+        final Player player = e.getPlayer();
+        final Action action = e.getAction();
+        Block block = e.getClickedBlock();
 
         if(block == null) return;
+
+        if(action != Action.RIGHT_CLICK_BLOCK) return;
 
         switch (block.getType()) {
 
@@ -42,22 +48,25 @@ public class PlayerInteract implements Listener {
                 BlockState blockState = block.getState();
                 Door door = (Door) blockState.getData();
 
-                if (door.isTopHalf()) block = Bukkit.getWorld(block.getWorld().getUID()).getBlockAt(block.getLocation().subtract(0,1,0));
-
-                break;
-            case CHEST:
-            case ENDER_CHEST:
-            case TRAPPED_CHEST:
+                if (door.isTopHalf()) {
+                    block = Bukkit.getWorld(block.getWorld().getUID()).getBlockAt(block.getLocation().subtract(0, 1, 0));
+                }
 
                 break;
         }
+
         //保護されているブロックか？
         if(!ProtectManager.get().isProtect(block.getLocation())) return;
 
         final Protect protect = ProtectManager.get().getProtected_Block(block.getLocation());
 
-        //オーナーであるか
-        if(!protect.isOwner(player.getName())) event.setCancelled(true);
+        //オーナーではないならキャンセル
+        if(!protect.isOwner(player.getName())) {
+
+            player.sendMessage("オーナー以外は使用できません");
+            e.setCancelled(true);
+            return;
+        }
 
         return;
 
