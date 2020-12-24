@@ -38,15 +38,15 @@ public class BlockPlaceListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent e) {
 
         final Block block = e.getBlock();
-        System.out.println(2);
+
         //保護対象のブロックか？
         if(!PROTECTABLE_MATERIALS.contains(block.getType())) return;
-        System.out.println(3);
+
         final Player player = e.getPlayer();
-        System.out.println(4);
+
         //既に保護されているか？
         if(ProtectManager.get().isProtect(block.getLocation())) return;
-        System.out.println(5);
+
         //保護する
         Protect.create(player.getName(), player.getUniqueId().toString(), block.getLocation());
 
