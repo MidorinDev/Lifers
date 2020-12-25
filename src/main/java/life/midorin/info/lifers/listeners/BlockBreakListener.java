@@ -2,7 +2,6 @@ package life.midorin.info.lifers.listeners;
 
 import life.midorin.info.lifers.manager.ProtectManager;
 import life.midorin.info.lifers.protect.Protect;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -44,6 +43,9 @@ public class BlockBreakListener implements Listener {
                 }
 
                 break;
+            default:
+                block = block.getRelative(BlockFace.DOWN);
+
         }
 
         //保護されているブロックか？
@@ -67,4 +69,5 @@ public class BlockBreakListener implements Listener {
 
         return;
     }
+
 }
