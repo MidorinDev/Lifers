@@ -1,9 +1,8 @@
 package life.midorin.info.lifers.listeners;
 
 import life.midorin.info.lifers.manager.ProtectManager;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -55,7 +54,7 @@ public class BlockPistonListener implements Listener {
                     Door door = (Door) blockState.getData();
 
                     if (door.isTopHalf()) {
-                        block = Bukkit.getWorld(block.getWorld().getUID()).getBlockAt(block.getLocation().subtract(0, 1, 0));
+                        block = block.getRelative(BlockFace.DOWN);
                     }
 
                     break;
