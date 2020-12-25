@@ -36,6 +36,7 @@ public class LifersPlugin extends AbstractLifersPlugin {
                 new BlockBreakListener(),
                 new BlockPlaceListener(),
                 new BlockPistonListener(),
+                new HopperListener(),
                 new ConnectListener(),
                 new PlayerInteract()
         );
