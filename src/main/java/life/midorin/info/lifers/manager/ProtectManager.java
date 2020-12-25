@@ -1,11 +1,12 @@
 package life.midorin.info.lifers.manager;
 
+import com.google.common.collect.ImmutableSet;
 import life.midorin.info.lifers.protect.Protect;
-import life.midorin.info.lifers.util.MaterialType;
 import life.midorin.info.lifers.util.SQLQuery;
 import life.midorin.info.lifers.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,9 +18,29 @@ public class ProtectManager {
     private static ProtectManager instance = null;
     private final Set<Protect> protects = Collections.synchronizedSet(new HashSet<>());
     private final Set<String> cached = Collections.synchronizedSet(new HashSet<>());
+    public  static final Set<Material> PROTECTABLE_MATERIALS;
 
     public static synchronized ProtectManager get() {
         return instance == null ? instance = new ProtectManager() : instance;
+    }
+
+    static {
+        PROTECTABLE_MATERIALS = ImmutableSet.copyOf(Arrays.asList(
+                Material.WOOD_DOOR,
+                Material.DARK_OAK_DOOR,
+                Material.ACACIA_DOOR,
+                Material.BIRCH_DOOR,
+                Material.IRON_DOOR,
+                Material.JUNGLE_DOOR,
+                Material.SPRUCE_DOOR,
+                Material.TRAP_DOOR,
+                Material.WOODEN_DOOR,
+                Material.CHEST,
+                Material.ENDER_CHEST,
+                Material.TRAP_DOOR,
+                Material.TRAPPED_CHEST,
+                Material.IRON_TRAPDOOR
+        ));
     }
 
     public Protect getProtected_Block(Location location) {
