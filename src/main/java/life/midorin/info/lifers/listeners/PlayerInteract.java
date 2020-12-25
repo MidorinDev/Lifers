@@ -3,21 +3,14 @@ package life.midorin.info.lifers.listeners;
 import life.midorin.info.lifers.manager.ProtectManager;
 import life.midorin.info.lifers.protect.Protect;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
-import org.bukkit.block.DoubleChest;
-import org.bukkit.block.data.type.Switch;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.material.Door;
-
-import java.lang.management.MonitorInfo;
 
 public class PlayerInteract implements Listener {
 
@@ -32,6 +25,7 @@ public class PlayerInteract implements Listener {
 
         if(action != Action.RIGHT_CLICK_BLOCK) return;
 
+        //TODO コードをまとめる
         switch (block.getType()) {
 
             case WOOD_DOOR:

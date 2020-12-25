@@ -4,6 +4,7 @@ import life.midorin.info.lifers.manager.ProtectManager;
 import life.midorin.info.lifers.protect.Protect;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,8 +20,9 @@ public class BlockBreakListener implements Listener {
         Block block = e.getBlock();
 
         //保護対象のブロックか？
-        if(!ProtectManager.get().PROTECTABLE_MATERIALS.contains(block.getType())) return;
+        if(!ProtectManager.get().PROTECTABLE_MATERIALS.contains(block.getType())) block = block.getRelative(BlockFace.UP);
 
+        //TODO コードをまとめる
         switch (block.getType()) {
 
             case WOOD_DOOR:
@@ -38,7 +40,7 @@ public class BlockBreakListener implements Listener {
                 Door door = (Door) blockState.getData();
 
                 if (door.isTopHalf()) {
-                    block = Bukkit.getWorld(block.getWorld().getUID()).getBlockAt(block.getLocation().subtract(0, 1, 0));
+                    block = e.getBlock().getRelative(BlockFace.DOWN);
                 }
 
                 break;
