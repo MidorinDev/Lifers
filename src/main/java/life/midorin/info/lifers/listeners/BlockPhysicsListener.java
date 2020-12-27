@@ -14,7 +14,6 @@ public class BlockPhysicsListener implements Listener {
     @EventHandler
     public void onBlockPhysics(BlockPhysicsEvent e) {
 
-
         Block block = e.getBlock();
 
         if(block == null)  return;
