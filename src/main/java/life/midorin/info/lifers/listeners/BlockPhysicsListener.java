@@ -14,7 +14,10 @@ public class BlockPhysicsListener implements Listener {
     @EventHandler
     public void onBlockPhysics(BlockPhysicsEvent e) {
 
+
         Block block = e.getBlock();
+
+        if(block == null)  return;
 
             //TODO コードをまとめる
             switch (block.getType()) {
@@ -25,10 +28,9 @@ public class BlockPhysicsListener implements Listener {
                 case JUNGLE_DOOR:
                 case ACACIA_DOOR:
                 case DARK_OAK_DOOR:
-                case TRAP_DOOR:
                 case WOODEN_DOOR:
                 case IRON_DOOR:
-                case IRON_TRAPDOOR:
+                case IRON_DOOR_BLOCK:
 
                     BlockState blockState = block.getState();
                     Door door = (Door) blockState.getData();
@@ -38,10 +40,12 @@ public class BlockPhysicsListener implements Listener {
                     }
 
                     break;
+                default:
+                    block = e.getBlock().getRelative(BlockFace.SELF);
             }
 
             //保護されているブロックか？
-            if (!ProtectManager.get().isProtect(block.getLocation())) e.setCancelled(true);
+            if (ProtectManager.get().isProtect(block.getLocation())) e.setCancelled(true);
 
         }
 

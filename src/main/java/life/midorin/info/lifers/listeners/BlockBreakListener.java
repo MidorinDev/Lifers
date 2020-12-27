@@ -3,6 +3,7 @@ package life.midorin.info.lifers.listeners;
 import life.midorin.info.lifers.manager.ProtectManager;
 import life.midorin.info.lifers.protect.Protect;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Door;
 
 public class BlockBreakListener implements Listener {
@@ -31,10 +33,9 @@ public class BlockBreakListener implements Listener {
             case JUNGLE_DOOR:
             case ACACIA_DOOR:
             case DARK_OAK_DOOR:
-            case TRAP_DOOR:
             case WOODEN_DOOR:
             case IRON_DOOR:
-            case IRON_TRAPDOOR:
+            case IRON_DOOR_BLOCK:
 
                 BlockState blockState = block.getState();
                 Door door = (Door) blockState.getData();
@@ -44,6 +45,8 @@ public class BlockBreakListener implements Listener {
                 }
 
                 break;
+            default:
+                block = e.getBlock().getRelative(BlockFace.SELF);
         }
 
         //保護されているブロックか？

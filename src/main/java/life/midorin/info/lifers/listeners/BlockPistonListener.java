@@ -38,10 +38,9 @@ public class BlockPistonListener implements Listener {
                 case JUNGLE_DOOR:
                 case ACACIA_DOOR:
                 case DARK_OAK_DOOR:
-                case TRAP_DOOR:
                 case WOODEN_DOOR:
                 case IRON_DOOR:
-                case IRON_TRAPDOOR:
+                case IRON_DOOR_BLOCK:
 
                     BlockState blockState = block.getState();
                     Door door = (Door) blockState.getData();
@@ -51,6 +50,8 @@ public class BlockPistonListener implements Listener {
                     }
 
                     break;
+                default:
+                    block = block.getRelative(BlockFace.SELF);
             }
 
             //保護されているブロックか？
