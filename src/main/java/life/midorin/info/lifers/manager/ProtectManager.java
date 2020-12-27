@@ -39,7 +39,8 @@ public class ProtectManager {
                 Material.ENDER_CHEST,
                 Material.TRAP_DOOR,
                 Material.TRAPPED_CHEST,
-                Material.IRON_TRAPDOOR
+                Material.IRON_TRAPDOOR,
+                Material.IRON_DOOR_BLOCK
         ));
     }
 
