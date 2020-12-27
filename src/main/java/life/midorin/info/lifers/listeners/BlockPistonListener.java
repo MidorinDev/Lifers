@@ -17,24 +17,17 @@ public class BlockPistonListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void BlockPistonEvent(BlockPistonExtendEvent e) {
-
         if (compareWithDefault(e.getBlocks())) e.setCancelled(true);
-
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void BlockPistonEvent(BlockPistonRetractEvent e) {
-
         if (compareWithDefault(e.getBlocks())) e.setCancelled(true);
-
     }
 
     private boolean compareWithDefault(List<Block> blocks) {
 
         for (Block block : blocks) {
-
-            //保護対象のブロックか？
-            if (!ProtectManager.get().PROTECTABLE_MATERIALS.contains(block.getType())) return false;
 
             //TODO コードをまとめる
             switch (block.getType()) {
@@ -61,10 +54,10 @@ public class BlockPistonListener implements Listener {
             }
 
             //保護されているブロックか？
-            if (!ProtectManager.get().isProtect(block.getLocation())) return false;
+            if (ProtectManager.get().isProtect(block.getLocation())) return true;
 
-            return true;
         }
         return false;
     }
+
 }
