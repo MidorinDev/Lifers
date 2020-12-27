@@ -3,7 +3,6 @@ package life.midorin.info.lifers.listeners;
 import life.midorin.info.lifers.manager.ProtectManager;
 import life.midorin.info.lifers.protect.Protect;
 import life.midorin.info.lifers.util.Messages;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -65,84 +64,34 @@ public class PlayerInteract implements Listener {
         //オーナーではないならキャンセル
         if(!protect.isOwner(player.getName())) {
 
-            player.sendMessage("オーナー以外は使用できません");
+            player.sendMessage(Messages.PREFIX + ChatColor.RED + "ドアの所有者以外はドアを解放、閉鎖できません。");
             e.setCancelled(true);
             return;
         }
 
-        return;
+        final ItemStack held = player.getInventory().getItemInMainHand();
 
-    }
+        if(block.getType() == Material.IRON_DOOR_BLOCK && e.getHand().equals(EquipmentSlot.HAND) && held.getType() == Material.AIR) {
 
-    @EventHandler
-    public void onRightClickEvent(PlayerInteractEvent e) {
-        Player player = e.getPlayer();
-        ItemStack held = player.getItemInHand();
-        Action action = e.getAction();
-        Block clicked = e.getClickedBlock();
-        if (!e.getHand().equals(EquipmentSlot.HAND) || !(clicked.getType() == Material.IRON_DOOR_BLOCK) || !(action == Action.RIGHT_CLICK_BLOCK))
-            return;
-
-        if (held.getType() == Material.AIR) {
-
-            if (clicked == null) return;
-
-            if (action != Action.RIGHT_CLICK_BLOCK) return;
-
-            //TODO コードをまとめる
-            switch (clicked.getType()) {
-
-                case WOOD_DOOR:
-                case SPRUCE_DOOR:
-                case BIRCH_DOOR:
-                case JUNGLE_DOOR:
-                case ACACIA_DOOR:
-                case DARK_OAK_DOOR:
-                case TRAP_DOOR:
-                case WOODEN_DOOR:
-                case IRON_DOOR:
-                case IRON_TRAPDOOR:
-
-                    BlockState blockState = clicked.getState();
-                    Door door = (Door) blockState.getData();
-
-                    if (door.isTopHalf()) {
-                        clicked = e.getClickedBlock().getRelative(BlockFace.DOWN);
-                    }
-
-                    break;
-            }
-
-            //保護されているブロックか？
-            if (!ProtectManager.get().isProtect(clicked.getLocation())) {
-                System.out.println("保護されていません");
-                System.out.println(clicked.getType().name());
-                return;
-            }
-
-            final Protect protect = ProtectManager.get().getProtected_Block(clicked.getLocation());
-
-            //オーナーではないならキャンセル
-            if (!protect.isOwner(player.getName())) {
-
-                player.sendMessage(Messages.PREFIX + ChatColor.RED + "ドアの所有者以外はドアを解放、閉鎖できません。");
-                e.setCancelled(true);
-                return;
-            }
-
-            BlockState state = clicked.getState();
+            BlockState state = block.getState();
             Door door = (Door) state.getData();
+
             if (door.isOpen()) {
+
                 door.setOpen(false);
                 player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 100, (float) 0.945);
-                state.update();
+
             } else {
+
                 door.setOpen(true);
                 player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_OPEN, 100, (float) 0.945);
-                state.update();
-            }
-        }
-    }
 
+            }
+
+            state.update();
+
+        }
+
+    }
 
 }
