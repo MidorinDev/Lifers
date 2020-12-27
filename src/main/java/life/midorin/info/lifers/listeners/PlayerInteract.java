@@ -17,6 +17,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Door;
+import org.bukkit.material.TrapDoor;
 
 public class PlayerInteract implements Listener {
 
@@ -64,12 +65,19 @@ public class PlayerInteract implements Listener {
         //オーナーではないならキャンセル
         if(!protect.isOwner(player.getName())) {
 
-            player.sendMessage(Messages.PREFIX + ChatColor.RED + "ドアの所有者以外はドアを解放、閉鎖できません。");
+            if (block instanceof Door) {
+                player.sendMessage(Messages.PREFIX + ChatColor.RED + "ドアの所有者以外はドアを解放、閉鎖できません。");
+            }
+
+            player.sendMessage(Messages.PREFIX + ChatColor.RED + "所有者以外は使うことができません");
             e.setCancelled(true);
             return;
+
         }
 
         final ItemStack held = player.getInventory().getItemInMainHand();
+
+        if (!(block.getType() != Material.IRON_DOOR_BLOCK || block.getType() != Material.IRON_TRAPDOOR)) return;
 
         if(block.getType() == Material.IRON_DOOR_BLOCK && e.getHand().equals(EquipmentSlot.HAND) && held.getType() == Material.AIR) {
 
@@ -84,6 +92,28 @@ public class PlayerInteract implements Listener {
             } else {
 
                 door.setOpen(true);
+                player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_OPEN, 100, (float) 0.945);
+
+            }
+
+           state.update();
+
+        }
+
+        if(block.getType() == Material.IRON_TRAPDOOR && e.getHand().equals(EquipmentSlot.HAND) && held.getType() == Material.AIR) {
+
+            BlockState state = block.getState();
+            TrapDoor door = (TrapDoor) state.getData();
+
+            if (door.isOpen()) {
+
+                door.setOpen(false);
+                player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 100, (float) 0.945);
+
+            } else {
+
+                door.setOpen(true);
+
                 player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_OPEN, 100, (float) 0.945);
 
             }
