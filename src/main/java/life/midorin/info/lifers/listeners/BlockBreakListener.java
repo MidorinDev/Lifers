@@ -20,7 +20,8 @@ public class BlockBreakListener implements Listener {
         Block block = e.getBlock();
 
         //保護対象のブロックか？
-        if(!ProtectManager.get().PROTECTABLE_MATERIALS.contains(block.getType())) block = block.getRelative(BlockFace.UP);
+        if (!ProtectManager.get().PROTECTABLE_MATERIALS.contains(block.getType()))
+            block = e.getBlock().getRelative(BlockFace.UP);
 
         //TODO コードをまとめる
         switch (block.getType()) {
@@ -44,10 +45,13 @@ public class BlockBreakListener implements Listener {
                 }
 
                 break;
+            default:
+                block = e.getBlock().getRelative(BlockFace.SELF);
         }
 
         //保護されているブロックか？
         if(!ProtectManager.get().isProtect(block.getLocation())) return;
+
 
         final Protect protect = ProtectManager.get().getProtected_Block(block.getLocation());
         final Player player = e.getPlayer();
