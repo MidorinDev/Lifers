@@ -1,10 +1,8 @@
 package life.midorin.info.lifers.menu.menus;
 
-import life.midorin.info.lifers.menu.Items;
 import life.midorin.info.lifers.menu.inv.ClickableItem;
 import life.midorin.info.lifers.menu.inv.content.InventoryContents;
 import life.midorin.info.lifers.menu.inv.content.InventoryProvider;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

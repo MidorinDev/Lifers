@@ -2,6 +2,8 @@ package life.midorin.info.lifers.listeners;
 
 import life.midorin.info.lifers.manager.ProtectManager;
 import life.midorin.info.lifers.protect.Protect;
+import life.midorin.info.lifers.util.Messages;
+import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -53,9 +55,9 @@ public class BlockBreakListener implements Listener {
         final Player player = e.getPlayer();
 
         //オーナーではないならキャンセル
-        if(!protect.isOwner(player.getName())) {
-
-            player.sendMessage("オーナー以外は破壊できません");
+        if(!protect.isOwner(player.getName()))
+        {
+            player.sendMessage(Messages.PREFIX + ChatColor.RED + "オーナー以外は破壊できません。");
             e.setCancelled(true);
             return;
         }
@@ -63,7 +65,7 @@ public class BlockBreakListener implements Listener {
         //保護を解除
         protect.delete();
 
-        player.sendMessage("保護を削除しました");
+        player.sendMessage(Messages.PREFIX + ChatColor.RED + "保護を解除しました。");
 
         return;
     }
