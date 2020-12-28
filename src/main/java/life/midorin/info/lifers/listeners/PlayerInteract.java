@@ -42,7 +42,6 @@ public class PlayerInteract implements Listener {
             case ACACIA_DOOR:
             case DARK_OAK_DOOR:
             case WOODEN_DOOR:
-            case IRON_DOOR:
             case IRON_DOOR_BLOCK:
 
                 BlockState blockState = block.getState();
@@ -54,28 +53,23 @@ public class PlayerInteract implements Listener {
 
                 break;
             default:
-                block = e.getClickedBlock().getRelative(BlockFace.SELF);
+                block = e.getClickedBlock();
         }
 
         //保護されているブロックか？
         if(!ProtectManager.get().isProtect(block.getLocation())) return;
 
         final Protect protect = ProtectManager.get().getProtected_Block(block.getLocation());
+        final ItemStack held = player.getInventory().getItemInMainHand();
 
         //オーナーではないならキャンセル
-        if(!protect.isOwner(player.getName())) {
-
-            if (block instanceof Door) {
-                player.sendMessage(Messages.PREFIX + ChatColor.RED + "ドアの所有者以外はドアを解放、閉鎖できません。");
-            }
+        if(!protect.isOwner(player.getName()) && e.getHand().equals(EquipmentSlot.HAND ) && held.getType() == Material.AIR) {
 
             player.sendMessage(Messages.PREFIX + ChatColor.RED + "所有者以外は使うことができません");
             e.setCancelled(true);
             return;
 
         }
-
-        final ItemStack held = player.getInventory().getItemInMainHand();
 
         if (!(block.getType() != Material.IRON_DOOR_BLOCK || block.getType() != Material.IRON_TRAPDOOR)) return;
 
@@ -85,12 +79,10 @@ public class PlayerInteract implements Listener {
             Door door = (Door) state.getData();
 
             if (door.isOpen()) {
-
                 door.setOpen(false);
                 player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 100, (float) 0.945);
 
             } else {
-
                 door.setOpen(true);
                 player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_OPEN, 100, (float) 0.945);
 
