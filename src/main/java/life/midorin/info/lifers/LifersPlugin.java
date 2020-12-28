@@ -5,6 +5,7 @@ import jp.jyn.jecon.Jecon;
 import life.midorin.info.lifers.commands.*;
 import life.midorin.info.lifers.listeners.*;
 import life.midorin.info.lifers.manager.DatabaseManager;
+import life.midorin.info.lifers.menu.inv.InventoryManager;
 import life.midorin.info.lifers.menu.Items;
 import life.midorin.info.lifers.menu.LandGUI;
 import life.midorin.info.lifers.util.CustomConfig;
@@ -20,6 +21,7 @@ public class LifersPlugin extends AbstractLifersPlugin {
     public static WorldGuardPlugin guard;
 
     private CustomConfig configuration;
+    private InventoryManager invManager;
 
     @Override
     public void onEnable() {
@@ -30,6 +32,8 @@ public class LifersPlugin extends AbstractLifersPlugin {
         setup();
 
         this.configuration = new CustomConfig(this, resolveConfig());
+        this.invManager = new InventoryManager(this);
+        this.invManager.init();
 
         //リスナーを登録
         registerListeners(
@@ -102,6 +106,10 @@ public class LifersPlugin extends AbstractLifersPlugin {
 
     public Path getConfigDirectory() {
         return getDataFolder().toPath().toAbsolutePath();
+    }
+
+    public InventoryManager getInvManager() {
+        return invManager;
     }
 
 }
