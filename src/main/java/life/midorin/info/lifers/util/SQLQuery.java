@@ -45,6 +45,11 @@ public enum  SQLQuery {
 
             "SELECT * FROM Protected_blocks WHERE world = ? AND x = ? AND y = ? AND z = ?"
     ),
+    SELECT_PROTECTED_PLAYER_BLOCK_LIST(
+            "SELECT * FROM `Protected_blocks` WHERE `uuid` = ?",
+
+            "SELECT * FROM Protected_blocks WHERE uuid = ?"
+    ),
     DELETE_PROTECTED_BLOCK(
             "DELETE FROM `Protected_blocks` WHERE `id` = ?",
 

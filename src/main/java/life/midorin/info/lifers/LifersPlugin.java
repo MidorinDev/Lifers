@@ -6,8 +6,6 @@ import life.midorin.info.lifers.commands.*;
 import life.midorin.info.lifers.listeners.*;
 import life.midorin.info.lifers.manager.DatabaseManager;
 import life.midorin.info.lifers.menu.inv.InventoryManager;
-import life.midorin.info.lifers.menu.Items;
-import life.midorin.info.lifers.menu.LandGUI;
 import life.midorin.info.lifers.util.CustomConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -64,14 +62,6 @@ public class LifersPlugin extends AbstractLifersPlugin {
         if (WGPlugin == null || !WGPlugin.isEnabled()) getLogger().warning("WorldGuard is not available.");
         jecon = (Jecon) JPlugin;
         guard = (WorldGuardPlugin) WGPlugin;
-
-        Items.setup();
-        LandGUI.setFream27(LandGUI.main);
-        LandGUI.setFream27(LandGUI.setting);
-        LandGUI.setFream27(LandGUI.list);
-        LandGUI.main.setItem(11, Items.green_wool);
-        LandGUI.main.setItem(13, Items.red_wool);
-        LandGUI.main.setItem(15, Items.anvil);
 
     }
 

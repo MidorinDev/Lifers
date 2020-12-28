@@ -32,7 +32,6 @@ public class BlockPistonListener implements Listener {
             //TODO コードをまとめる
             switch (block.getType()) {
 
-                case WOOD_DOOR:
                 case SPRUCE_DOOR:
                 case BIRCH_DOOR:
                 case JUNGLE_DOOR:

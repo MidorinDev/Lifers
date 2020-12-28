@@ -1,21 +1,48 @@
 package life.midorin.info.lifers.menu.inv;
 
+import com.google.common.collect.Iterables;
+import life.midorin.info.lifers.util.Constants;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.*;
 import java.util.function.Consumer;
 
 public class ClickableItem {
 
-    private ItemStack item;
+    public ItemStack basedItemStack;
+    public Material material = Material.AIR;
+    public int amount = 1;
+    public int damage;
+    public String displayName;
+    public List<String> lore = new ArrayList<>();
+    public Map<Enchantment, Integer> enchantments = new HashMap<>();
+    public Set<ItemFlag> flags = new HashSet<>();
+    private Consumer<ItemStack> raw = Constants.noOperation();
+
+    private Consumer<ClickableItem> iconSettings;
     private Consumer<InventoryClickEvent> consumer;
 
     private ClickableItem(ItemStack item, Consumer<InventoryClickEvent> consumer) {
-        this.item = item;
+        this.basedItemStack = item;
         this.consumer = consumer;
     }
 
+    private ClickableItem(Consumer<ClickableItem> settings, Consumer<InventoryClickEvent> consumer) {
+        this.iconSettings = settings;
+        this.consumer = consumer;
+        this.iconSettings.accept(this);
+    }
+
     public static ClickableItem empty(ItemStack item) {
+        return of(item, e -> {});
+    }
+
+    public static ClickableItem empty(Consumer<ClickableItem> item) {
         return of(item, e -> {});
     }
 
@@ -23,8 +50,40 @@ public class ClickableItem {
         return new ClickableItem(item, consumer);
     }
 
-    public void run(InventoryClickEvent e) { consumer.accept(e); }
+    public static ClickableItem of(Consumer<ClickableItem> settings, Consumer<InventoryClickEvent> consumer) {
+        return new ClickableItem(settings, consumer);
+    }
 
-    public ItemStack getItem() { return item; }
+    public void run(InventoryClickEvent e) {
+        consumer.accept(e);
+    }
+
+    public ItemStack getItem() { return basedItemStack; }
+
+    public void raw(Consumer<ItemStack> settings) {
+        raw = settings;
+    }
+
+    public void apply(ItemStack item) {
+        item.setAmount(amount);
+        item.setDurability((short) damage);
+
+        ItemMeta meta = item.getItemMeta();
+        if(meta != null){
+            meta.setDisplayName(displayName);
+            meta.setLore(lore);
+            enchantments.forEach((enchantment, level) -> meta.addEnchant(enchantment, level, true));
+            meta.addItemFlags(Iterables.toArray(flags, ItemFlag.class));
+            item.setItemMeta(meta);
+        }
+
+        raw.accept(item);
+    }
+
+    public ItemStack toItemStack(){
+        ItemStack item = basedItemStack != null ? basedItemStack : new ItemStack(material);
+        apply(item);
+        return item;
+    }
 
 }

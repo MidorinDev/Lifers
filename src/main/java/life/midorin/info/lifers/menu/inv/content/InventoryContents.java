@@ -139,7 +139,7 @@ public interface InventoryContents {
                 return this;
 
             contents[row][column] = item;
-            update(row, column, item != null ? item.getItem() : null);
+            update(row, column, item != null ? item.toItemStack() : null );
             return this;
         }
 

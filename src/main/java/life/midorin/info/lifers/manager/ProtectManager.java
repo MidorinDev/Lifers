@@ -7,6 +7,7 @@ import life.midorin.info.lifers.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,7 +27,6 @@ public class ProtectManager {
 
     static {
         PROTECTABLE_MATERIALS = ImmutableSet.copyOf(Arrays.asList(
-                Material.WOOD_DOOR,
                 Material.DARK_OAK_DOOR,
                 Material.ACACIA_DOOR,
                 Material.BIRCH_DOOR,
@@ -49,6 +49,11 @@ public class ProtectManager {
         return protects.isEmpty() ? null : protects.get(0);
     }
 
+    public Protect getProtected_Block(Player player) {
+        List<Protect> protects = getProtected_Blocks(player);
+        return protects.isEmpty() ? null : protects.get(0);
+    }
+
     public List<Protect> getProtected_Blocks(Location location ) {
         List<Protect> ptList = new ArrayList<>();
 
@@ -68,6 +73,24 @@ public class ProtectManager {
                 Utils.debugSqlException(ex);
                 Utils.log("の土地を取得する際にエラーが発生しました" );
             }
+
+        return ptList;
+    }
+
+    public List<Protect> getProtected_Blocks(Player player) {
+        List<Protect> ptList = new ArrayList<>();
+
+        try (ResultSet rs = DatabaseManager.get().executeResultStatement(SQLQuery.SELECT_PROTECTED_PLAYER_BLOCK_LIST,player.getUniqueId()))
+        {
+            while (rs.next()) {
+                Protect protect = getLandFromResultSet(rs);
+
+                ptList.add(protect);
+            }
+        } catch (SQLException ex) {
+            Utils.debugSqlException(ex);
+            Utils.log("の土地を取得する際にエラーが発生しました" );
+        }
 
         return ptList;
     }
