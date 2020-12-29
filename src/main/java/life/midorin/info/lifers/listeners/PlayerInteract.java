@@ -62,7 +62,7 @@ public class PlayerInteract implements Listener {
         final ItemStack held = player.getInventory().getItemInMainHand();
 
         //オーナーではないならキャンセル
-        if(!protect.isOwner(player.getName()) && e.getHand().equals(EquipmentSlot.HAND ) && held.getType() == Material.AIR) {
+        if(!protect.isOwner(player.getName()) && e.getHand().equals(EquipmentSlot.HAND )) {
 
             player.sendMessage(Messages.PREFIX + ChatColor.RED + "所有者以外は使うことができません");
             e.setCancelled(true);
