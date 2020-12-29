@@ -77,7 +77,7 @@ public class ProtectMemberList implements InventoryProvider {
             i.material = Material.ARROW;
             i.displayName = RED + "戻る";
             i.lore = Collections.singletonList(GRAY  + ChatColor.stripColor(ProtectSettingsMenu.INVENTORY(protect).getTitle())  + "  へ");
-        }, e -> LandMenu.INVENTORY.open(player)));
+        }, e -> ProtectSettingsMenu.INVENTORY(protect).open(player)));
 
         if(!pagination.isLast()) {
             contents.set(3, 8, ClickableItem.of(i -> {
