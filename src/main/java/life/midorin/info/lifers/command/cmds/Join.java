@@ -1,6 +1,7 @@
-package life.midorin.info.lifers.commands;
+package life.midorin.info.lifers.command.cmds;
 
 import life.midorin.info.lifers.LifersPlugin;
+import life.midorin.info.lifers.manager.ProtectManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;

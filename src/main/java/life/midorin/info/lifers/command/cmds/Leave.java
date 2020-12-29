@@ -1,4 +1,4 @@
-package life.midorin.info.lifers.commands;
+package life.midorin.info.lifers.command.cmds;
 
 import life.midorin.info.lifers.LifersPlugin;
 import org.bukkit.Bukkit;
