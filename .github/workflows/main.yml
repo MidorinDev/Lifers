@@ -23,7 +23,6 @@ jobs:
       uses: softprops/action-gh-release@v1
       with:
         tag_name: action-v${{ github.run_number }}
-        body_path: staging
-        files: '*.jar'
+        files: './staging/*.jar'
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
