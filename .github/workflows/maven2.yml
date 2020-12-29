@@ -20,5 +20,12 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Build with Maven
-      run: mvn -B package --file pom.xml
+    - name: Mavenを使ってビルド
+      run: mvn --batch-mode --update-snapshots verify
+    - name: リリースするディレクトリを作成
+      run: mkdir staging && cp target/*.jar staging
+    - name: パッケージをビルドの成果物としてアップロード
+      uses: actions/upload-artifact@v2
+      with:
+        name: Package
+        path: staging
