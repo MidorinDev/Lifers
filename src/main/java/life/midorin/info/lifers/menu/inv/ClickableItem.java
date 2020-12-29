@@ -27,6 +27,13 @@ public class ClickableItem {
     private Consumer<ClickableItem> iconSettings;
     private Consumer<InventoryClickEvent> consumer;
 
+    private ClickableItem(ItemStack item, Consumer<ClickableItem> settings, Consumer<InventoryClickEvent> consumer) {
+        this.iconSettings = settings;
+        this.basedItemStack = item;
+        this.consumer = consumer;
+        this.iconSettings.accept(this);
+    }
+
     private ClickableItem(ItemStack item, Consumer<InventoryClickEvent> consumer) {
         this.basedItemStack = item;
         this.consumer = consumer;
@@ -44,6 +51,14 @@ public class ClickableItem {
 
     public static ClickableItem empty(Consumer<ClickableItem> item) {
         return of(item, e -> {});
+    }
+
+    public static ClickableItem empty(ItemStack item, Consumer<ClickableItem> iconSettings) {
+        return of(item, iconSettings, e -> {});
+    }
+
+    public static ClickableItem of(ItemStack item, Consumer<ClickableItem> settings, Consumer<InventoryClickEvent> consumer) {
+        return new ClickableItem(item, settings, consumer);
     }
 
     public static ClickableItem of(ItemStack item, Consumer<InventoryClickEvent> consumer) {
@@ -66,7 +81,8 @@ public class ClickableItem {
 
     public void apply(ItemStack item) {
         item.setAmount(amount);
-        item.setDurability((short) damage);
+
+        if (basedItemStack == null) item.setDurability((short) damage);
 
         ItemMeta meta = item.getItemMeta();
         if(meta != null){
