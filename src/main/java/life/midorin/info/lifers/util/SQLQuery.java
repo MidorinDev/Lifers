@@ -80,6 +80,11 @@ public enum  SQLQuery {
             "DELETE FROM `Protected_blocks` WHERE `id` = ?",
 
             "DELETE FROM Protected_blocks WHERE id = ?"
+    ),
+    DELETE_PROTECTED_BLOCK_MEMBERS(
+            "DELETE FROM `Protected_block_Members` WHERE `protected_blockId` = ?",
+
+                    "DELETE FROM Protected_block_Members WHERE protected_blockId = ?"
     );
 
     private String mysql;

@@ -76,6 +76,7 @@ public class Protect {
             return;
         }
         DatabaseManager.get().executeStatement(SQLQuery.DELETE_PROTECTED_BLOCK, id);
+        DatabaseManager.get().executeStatement(SQLQuery.DELETE_PROTECTED_BLOCK_MEMBERS, id);
     }
 
     public void addMember(Player player) {
