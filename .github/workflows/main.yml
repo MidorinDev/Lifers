@@ -20,7 +20,7 @@ jobs:
     - name: リリースするディレクトリを作成
       run: mkdir staging && cp target/*.jar staging
     - name: パッケージをビルドの成果物としてリリース
-    - uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v1
       with:
         tag_name: action-v${{ github.run_number }}
         path: staging
