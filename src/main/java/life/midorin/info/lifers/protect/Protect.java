@@ -1,18 +1,17 @@
 package life.midorin.info.lifers.protect;
 
 import life.midorin.info.lifers.manager.DatabaseManager;
+import life.midorin.info.lifers.manager.ProtectManager;
 import life.midorin.info.lifers.util.MaterialType;
 import life.midorin.info.lifers.util.SQLQuery;
 import life.midorin.info.lifers.util.Utils;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.*;
 
 public class Protect {
 
@@ -20,6 +19,8 @@ public class Protect {
     private final World world;
     private final double x, y, z;
     private final Block block;
+
+    private List<String> trusted_players;
 
     private int id;
 
@@ -32,6 +33,7 @@ public class Protect {
         this.y = block.getY();
         this.z = block.getZ();
         this.id = id;
+        this.trusted_players = ProtectManager.get().getProtected_Block_Members(id);
     }
 
     public static void create(String owner, String uuid, Location loc) {
@@ -76,6 +78,13 @@ public class Protect {
         DatabaseManager.get().executeStatement(SQLQuery.DELETE_PROTECTED_BLOCK, id);
     }
 
+    public void addMember(Player player) {
+        if(!trusted_players.contains(player))
+        trusted_players.add(player.getUniqueId().toString());
+
+        DatabaseManager.get().executeStatement(SQLQuery.INSERT_PROTECTED_BLOCK_MEMBER, this.id, player.getUniqueId());
+    }
+
     public String getOwner() {
         return owner;
     }
@@ -106,6 +115,10 @@ public class Protect {
 
     public int getId() {
         return id;
+    }
+
+    public List<String> getTrusted_players() {
+        return trusted_players;
     }
 
     public boolean isOwner(String player) {
