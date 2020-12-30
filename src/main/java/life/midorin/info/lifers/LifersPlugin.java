@@ -2,7 +2,12 @@ package life.midorin.info.lifers;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import jp.jyn.jecon.Jecon;
-import life.midorin.info.lifers.command.cmds.*;
+import life.midorin.info.lifers.commands.land.Land;
+import life.midorin.info.lifers.commands.other.Join;
+import life.midorin.info.lifers.commands.other.Leave;
+import life.midorin.info.lifers.commands.other.Xyz;
+import life.midorin.info.lifers.commands.protect.Lock;
+import life.midorin.info.lifers.commands.protect.unLock;
 import life.midorin.info.lifers.listeners.*;
 import life.midorin.info.lifers.manager.DatabaseManager;
 import life.midorin.info.lifers.menu.inv.InventoryManager;
@@ -46,7 +51,6 @@ public class LifersPlugin extends AbstractLifersPlugin {
 
         //コマンドを登録
         registerCommands(
-                //new (this)
         );
 
         getCommand("join").setExecutor(new Join());

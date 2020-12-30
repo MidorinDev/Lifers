@@ -1,9 +1,8 @@
 package life.midorin.info.lifers;
 
 import life.midorin.info.lifers.command.AbstractCommand;
-import life.midorin.info.lifers.command.SubCommand;
-import lombok.NonNull;
-import org.bukkit.command.CommandSender;
+import life.midorin.info.lifers.command.BukkitCommandExecutor;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;

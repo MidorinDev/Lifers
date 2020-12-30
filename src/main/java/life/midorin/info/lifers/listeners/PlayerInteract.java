@@ -61,57 +61,55 @@ public class PlayerInteract implements Listener {
         final Protect protect = ProtectManager.get().getProtected_Block(block.getLocation());
         final ItemStack held = player.getInventory().getItemInMainHand();
 
-        //オーナーではないならキャンセル
-        if(!protect.isOwner(player.getName()) && e.getHand().equals(EquipmentSlot.HAND )) {
+        if(protect.isOwner(player.getName()) && e.getHand().equals(EquipmentSlot.HAND ) || protect.isAccess(player.getUniqueId().toString())) {
 
-            player.sendMessage(Messages.PREFIX + ChatColor.RED + "所有者以外は使うことができません");
-            e.setCancelled(true);
+            if (!(block.getType() != Material.IRON_DOOR_BLOCK || block.getType() != Material.IRON_TRAPDOOR)) return;
+
+            if(block.getType() == Material.IRON_DOOR_BLOCK && e.getHand().equals(EquipmentSlot.HAND) && held.getType() == Material.AIR) {
+
+                BlockState state = block.getState();
+                Door door = (Door) state.getData();
+
+                if (door.isOpen()) {
+                    door.setOpen(false);
+                    player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 100, (float) 0.945);
+
+                } else {
+                    door.setOpen(true);
+                    player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_OPEN, 100, (float) 0.945);
+
+                }
+
+                state.update();
+
+            }
+
+            if(block.getType() == Material.IRON_TRAPDOOR && e.getHand().equals(EquipmentSlot.HAND) && held.getType() == Material.AIR) {
+
+                BlockState state = block.getState();
+                TrapDoor door = (TrapDoor) state.getData();
+
+                if (door.isOpen()) {
+
+                    door.setOpen(false);
+                    player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 100, (float) 0.945);
+
+                } else {
+
+                    door.setOpen(true);
+
+                    player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_OPEN, 100, (float) 0.945);
+
+                }
+
+                state.update();
+
+            }
             return;
-
         }
 
-        if (!(block.getType() != Material.IRON_DOOR_BLOCK || block.getType() != Material.IRON_TRAPDOOR)) return;
-
-        if(block.getType() == Material.IRON_DOOR_BLOCK && e.getHand().equals(EquipmentSlot.HAND) && held.getType() == Material.AIR) {
-
-            BlockState state = block.getState();
-            Door door = (Door) state.getData();
-
-            if (door.isOpen()) {
-                door.setOpen(false);
-                player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 100, (float) 0.945);
-
-            } else {
-                door.setOpen(true);
-                player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_OPEN, 100, (float) 0.945);
-
-            }
-
-           state.update();
-
-        }
-
-        if(block.getType() == Material.IRON_TRAPDOOR && e.getHand().equals(EquipmentSlot.HAND) && held.getType() == Material.AIR) {
-
-            BlockState state = block.getState();
-            TrapDoor door = (TrapDoor) state.getData();
-
-            if (door.isOpen()) {
-
-                door.setOpen(false);
-                player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 100, (float) 0.945);
-
-            } else {
-
-                door.setOpen(true);
-
-                player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_OPEN, 100, (float) 0.945);
-
-            }
-
-            state.update();
-
-        }
+        player.sendMessage(Messages.PREFIX + ChatColor.RED + "所有者以外または使用許可されていないプレイヤーは使うことができません");
+        e.setCancelled(true);
 
     }
 

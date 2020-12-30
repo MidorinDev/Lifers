@@ -1,4 +1,4 @@
-package life.midorin.info.lifers.command.cmds;
+package life.midorin.info.lifers.commands.protect;
 
 import life.midorin.info.lifers.manager.ProtectManager;
 import life.midorin.info.lifers.protect.Protect;

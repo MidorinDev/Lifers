@@ -125,4 +125,8 @@ public class Protect {
     public boolean isOwner(String player) {
         return this.owner.equals(player);
     }
+
+    public boolean isAccess(String uuid) {
+        return this.trusted_players.contains(uuid);
+    }
 }

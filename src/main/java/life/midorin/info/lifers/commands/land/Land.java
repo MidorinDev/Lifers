@@ -1,4 +1,4 @@
-package life.midorin.info.lifers.command.cmds;
+package life.midorin.info.lifers.commands.land;
 
 import life.midorin.info.lifers.menu.menus.land.LandMenu;
 import org.bukkit.Sound;
