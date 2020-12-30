@@ -1,5 +1,6 @@
 package life.midorin.info.lifers;
 
+import life.midorin.info.lifers.command.AbstractCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -12,7 +13,7 @@ import java.util.Objects;
 
 public class AbstractLifersPlugin extends JavaPlugin implements Listener {
 
-    //private final Map<String, AbstractCommand<ServerGatePlugins>> commands = new HashMap<>();
+    private final Map<String, AbstractCommand<LifersPlugin>> commands = new HashMap<>();
 
     @Override
     public void onEnable(){
@@ -23,13 +24,13 @@ public class AbstractLifersPlugin extends JavaPlugin implements Listener {
         HandlerList.unregisterAll();
     }
 
-    /*@SafeVarargs
+    @SafeVarargs
     protected  final void registerCommands(final AbstractCommand<LifersPlugin>... commands) {
-        for (final AbstractCommand<ServerGatePlugins> command : commands) {
+        for (final AbstractCommand<LifersPlugin> command : commands) {
             this.commands.put(command.getName().toLowerCase(), command);
             command.register();
         }
-    }*/
+    }
 
     protected File resolveConfig() {
         File configFile = new File(this.getDataFolder(), "config.yml");

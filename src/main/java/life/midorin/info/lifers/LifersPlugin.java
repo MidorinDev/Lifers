@@ -53,7 +53,7 @@ public class LifersPlugin extends AbstractLifersPlugin {
                 new PlayerInteract()
         );
 
-        registerMainCommands();
+        //registerMainCommands();
 
         //コマンドを登録
         registerCommands(
