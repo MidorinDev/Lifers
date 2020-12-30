@@ -1,4 +1,4 @@
-package life.midorin.info.lifers.commands;
+package life.midorin.info.lifers.commands.other;
 
 import life.midorin.info.lifers.LifersPlugin;
 import org.bukkit.Bukkit;
@@ -9,18 +9,18 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Leave implements CommandExecutor
+public class Join implements CommandExecutor
 {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args)
     {
         Player p = (Player) sender;
-        if (sender.hasPermission("Lifers.leave"))
+        if (sender.hasPermission("Lifers.join"))
         {
             for (Player au : Bukkit.getOnlinePlayers())
-                au.hidePlayer(LifersPlugin.getPlugin(), p);
-            p.setGameMode(GameMode.SPECTATOR);
-            Bukkit.broadcastMessage(ChatColor.WHITE + "[" + ChatColor.RED + "Quit" + ChatColor.WHITE + "] " + ChatColor.GRAY + p.getName());
+                au.showPlayer(LifersPlugin.getPlugin(), p);
+            p.setGameMode(GameMode.CREATIVE);
+            Bukkit.broadcastMessage(ChatColor.WHITE + "[" + ChatColor.AQUA + "Join" + ChatColor.WHITE + "] " + ChatColor.GRAY + p.getName());
         }
         return true;
     }

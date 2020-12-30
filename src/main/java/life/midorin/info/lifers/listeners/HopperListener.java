@@ -35,16 +35,14 @@ public class HopperListener implements Listener {
             //TODO コードをまとめる
             switch (block.getType()) {
 
-                case WOOD_DOOR:
                 case SPRUCE_DOOR:
                 case BIRCH_DOOR:
                 case JUNGLE_DOOR:
                 case ACACIA_DOOR:
                 case DARK_OAK_DOOR:
-                case TRAP_DOOR:
                 case WOODEN_DOOR:
                 case IRON_DOOR:
-                case IRON_TRAPDOOR:
+                case IRON_DOOR_BLOCK:
 
                     BlockState blockState = block.getState();
                     Door door = (Door) blockState.getData();

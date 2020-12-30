@@ -2,6 +2,8 @@ package life.midorin.info.lifers.listeners;
 
 import life.midorin.info.lifers.manager.ProtectManager;
 import life.midorin.info.lifers.protect.Protect;
+import life.midorin.info.lifers.util.Messages;
+import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -26,7 +28,7 @@ public class BlockPlaceListener implements Listener {
         //保護する
         Protect.create(player.getName(), player.getUniqueId().toString(), block.getLocation());
 
-        player.sendMessage("保護しました");
+        player.sendMessage(Messages.PREFIX + ChatColor.YELLOW + "保護しました。");
     }
 
 }

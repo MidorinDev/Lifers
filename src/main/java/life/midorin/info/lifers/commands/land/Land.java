@@ -1,6 +1,6 @@
-package life.midorin.info.lifers.commands;
+package life.midorin.info.lifers.commands.land;
 
-import life.midorin.info.lifers.menu.LandGUI;
+import life.midorin.info.lifers.menu.menus.land.LandMenu;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,7 +14,10 @@ public class Land implements CommandExecutor
     {
         Player p = (Player) sender;
         p.playSound(p.getLocation(), Sound.ENTITY_MULE_CHEST, 50, 0);
-        p.openInventory(LandGUI.main);
+        LandMenu.INVENTORY.open(p);
+
         return true;
     }
+
+
 }

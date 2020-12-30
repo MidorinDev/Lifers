@@ -26,6 +26,18 @@ public enum  SQLQuery {
                     "z BIGINT," +
                     "materialType VARCHAR(16))"
     ),
+    CREATE_TABLE_PROTECTED_BLOCK_MEMBERS(
+            "CREATE TABLE IF NOT EXISTS `Protected_block_Members` ("+
+                    "`id` int NOT NULL AUTO_INCREMENT," +
+                    "`protected_blockId` VARCHAR(16) NULL DEFAULT NULL," +
+                    "`uuid` VARCHAR(35) NULL DEFAULT NULL," +
+                    "PRIMARY KEY (`id`))",
+
+            "CREATE TABLE IF NOT EXISTS Protected_block_Members (" +
+                    "id INTEGER PRIMARY KEY," +
+                    "protected_blockId VARCHAR(16)," +
+                    "uuid VARCHAR(35))"
+    ),
     INSERT_PROTECTED_BLOCK(
             "INSERT INTO `Protected_blocks` " +
                     "(`name`, `uuid`, `world`, `x`, `y`, `z`, `materialType`) " +
@@ -34,6 +46,15 @@ public enum  SQLQuery {
             "INSERT INTO Protected_blocks " +
                     "(name, uuid, world, x, y, z, materialType) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?)"
+    ),
+    INSERT_PROTECTED_BLOCK_MEMBER(
+            "INSERT INTO `Protected_blocks_Members` " +
+                    "(`protected_BlockId`, `uuid`) " +
+                    "VALUES (?, ?)",
+
+            "INSERT INTO Protected_block_Members " +
+                    "(protected_BlockId, uuid) " +
+                    "VALUES (?, ?)"
     ),
     SELECT_EXACT_PROTECTED_BLOCK(
             "SELECT * FROM `Protected_blocks` WHERE `uuid` = ? AND `materialType` = ? AND `world` = ? AND `x` = ? AND `y` = ? AND `z` = ?",
@@ -45,10 +66,25 @@ public enum  SQLQuery {
 
             "SELECT * FROM Protected_blocks WHERE world = ? AND x = ? AND y = ? AND z = ?"
     ),
+    SELECT_PROTECTED_BLOCK_MEMBERS(
+            "SELECT * FROM `Protected_block_Members` WHERE `protected_blockId` = ?",
+
+                    "SELECT * FROM Protected_block_Members WHERE protected_blockId = ?"
+    ),
+    SELECT_PROTECTED_PLAYER_BLOCK_LIST(
+            "SELECT * FROM `Protected_blocks` WHERE `uuid` = ?",
+
+            "SELECT * FROM Protected_blocks WHERE uuid = ?"
+    ),
     DELETE_PROTECTED_BLOCK(
             "DELETE FROM `Protected_blocks` WHERE `id` = ?",
 
             "DELETE FROM Protected_blocks WHERE id = ?"
+    ),
+    DELETE_PROTECTED_BLOCK_MEMBERS(
+            "DELETE FROM `Protected_block_Members` WHERE `protected_blockId` = ?",
+
+                    "DELETE FROM Protected_block_Members WHERE protected_blockId = ?"
     );
 
     private String mysql;

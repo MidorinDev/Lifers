@@ -2,11 +2,17 @@ package life.midorin.info.lifers;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import jp.jyn.jecon.Jecon;
-import life.midorin.info.lifers.commands.*;
+import life.midorin.info.lifers.commands.land.Land;
+import life.midorin.info.lifers.commands.other.Join;
+import life.midorin.info.lifers.commands.other.Leave;
+import life.midorin.info.lifers.commands.other.Xyz;
+import life.midorin.info.lifers.commands.protect.Lock;
+import life.midorin.info.lifers.commands.protect.unLock;
+import life.midorin.info.lifers.commands.teleport.teleportRequest;
 import life.midorin.info.lifers.listeners.*;
 import life.midorin.info.lifers.manager.DatabaseManager;
-import life.midorin.info.lifers.menu.Items;
-import life.midorin.info.lifers.menu.LandGUI;
+import life.midorin.info.lifers.menu.inv.InventoryManager;
+import life.midorin.info.lifers.user.UserSet;
 import life.midorin.info.lifers.util.CustomConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -20,6 +26,7 @@ public class LifersPlugin extends AbstractLifersPlugin {
     public static WorldGuardPlugin guard;
 
     private CustomConfig configuration;
+    private InventoryManager invManager;
 
     @Override
     public void onEnable() {
@@ -30,21 +37,28 @@ public class LifersPlugin extends AbstractLifersPlugin {
         setup();
 
         this.configuration = new CustomConfig(this, resolveConfig());
+        this.invManager = new InventoryManager(this);
+        this.invManager.init();
+
+        UserSet.load();
 
         //リスナーを登録
         registerListeners(
                 new BlockBreakListener(),
                 new BlockPlaceListener(),
                 new BlockPistonListener(),
+                new BlockPhysicsListener(),
                 new HopperListener(),
                 new ConnectListener(),
                 new PlayerInteract()
         );
 
+        registerMainCommands();
+
         //コマンドを登録
-        /*registerCommands(
-                new ServerGate(this)
-        );*/
+        registerCommands(
+                new teleportRequest(this)
+        );
 
         getCommand("join").setExecutor(new Join());
         getCommand("leave").setExecutor(new Leave());
@@ -59,14 +73,6 @@ public class LifersPlugin extends AbstractLifersPlugin {
         if (WGPlugin == null || !WGPlugin.isEnabled()) getLogger().warning("WorldGuard is not available.");
         jecon = (Jecon) JPlugin;
         guard = (WorldGuardPlugin) WGPlugin;
-
-        Items.setup();
-        LandGUI.setFream27(LandGUI.main);
-        LandGUI.setFream27(LandGUI.setting);
-        LandGUI.setFream27(LandGUI.list);
-        LandGUI.main.setItem(11, Items.green_wool);
-        LandGUI.main.setItem(13, Items.red_wool);
-        LandGUI.main.setItem(15, Items.anvil);
 
     }
 
@@ -101,6 +107,10 @@ public class LifersPlugin extends AbstractLifersPlugin {
 
     public Path getConfigDirectory() {
         return getDataFolder().toPath().toAbsolutePath();
+    }
+
+    public InventoryManager getInvManager() {
+        return invManager;
     }
 
 }

@@ -5,29 +5,18 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPistonExtendEvent;
-import org.bukkit.event.block.BlockPistonRetractEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.material.Door;
 
-import java.util.List;
+public class BlockPhysicsListener implements Listener {
 
-public class BlockPistonListener implements Listener {
+    @EventHandler
+    public void onBlockPhysics(BlockPhysicsEvent e) {
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void BlockPistonEvent(BlockPistonExtendEvent e) {
-        if (compareWithDefault(e.getBlocks())) e.setCancelled(true);
-    }
+        Block block = e.getBlock();
 
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void BlockPistonEvent(BlockPistonRetractEvent e) {
-        if (compareWithDefault(e.getBlocks())) e.setCancelled(true);
-    }
-
-    private boolean compareWithDefault(List<Block> blocks) {
-
-        for (Block block : blocks) {
+        if(block == null)  return;
 
             //TODO コードをまとめる
             switch (block.getType()) {
@@ -50,14 +39,12 @@ public class BlockPistonListener implements Listener {
 
                     break;
                 default:
-                    block = block.getRelative(BlockFace.SELF);
+                    block = e.getBlock().getRelative(BlockFace.SELF);
             }
 
             //保護されているブロックか？
-            if (ProtectManager.get().isProtect(block.getLocation())) return true;
+            if (ProtectManager.get().isProtect(block.getLocation())) e.setCancelled(true);
 
         }
-        return false;
-    }
 
 }
