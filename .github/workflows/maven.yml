@@ -1,4 +1,4 @@
-name: Mavenを使ったJava CI
+name: develope
 
 on:
   push:
