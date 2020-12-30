@@ -21,5 +21,4 @@ commands:
     description: Private
   lifers:
     description: main
-  remove2:
-  user:
+  tprequest:

@@ -8,9 +8,11 @@ import life.midorin.info.lifers.commands.other.Leave;
 import life.midorin.info.lifers.commands.other.Xyz;
 import life.midorin.info.lifers.commands.protect.Lock;
 import life.midorin.info.lifers.commands.protect.unLock;
+import life.midorin.info.lifers.commands.teleport.teleportRequest;
 import life.midorin.info.lifers.listeners.*;
 import life.midorin.info.lifers.manager.DatabaseManager;
 import life.midorin.info.lifers.menu.inv.InventoryManager;
+import life.midorin.info.lifers.user.UserSet;
 import life.midorin.info.lifers.util.CustomConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -38,6 +40,8 @@ public class LifersPlugin extends AbstractLifersPlugin {
         this.invManager = new InventoryManager(this);
         this.invManager.init();
 
+        UserSet.load();
+
         //リスナーを登録
         registerListeners(
                 new BlockBreakListener(),
@@ -49,8 +53,11 @@ public class LifersPlugin extends AbstractLifersPlugin {
                 new PlayerInteract()
         );
 
+        registerMainCommands();
+
         //コマンドを登録
         registerCommands(
+                new teleportRequest(this)
         );
 
         getCommand("join").setExecutor(new Join());

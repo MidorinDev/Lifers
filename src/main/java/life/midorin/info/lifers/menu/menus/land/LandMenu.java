@@ -20,7 +20,7 @@ import static org.bukkit.ChatColor.*;
 public class LandMenu implements InventoryProvider {
 
     public static final SmartInventory INVENTORY = SmartInventory.builder()
-            .id("customInventory")
+            .id("land")
                 .provider(new LandMenu())
             .size(3, 9)
                 .title(DARK_AQUA + "保護地操作パネル" + WHITE + " [Lands]")
