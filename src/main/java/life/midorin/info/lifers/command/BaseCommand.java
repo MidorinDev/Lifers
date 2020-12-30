@@ -2,7 +2,6 @@ package life.midorin.info.lifers.command;
 
 import life.midorin.info.lifers.LifersPlugin;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.Collection;
 import java.util.List;
