@@ -6,6 +6,7 @@ import life.midorin.info.lifers.menu.inv.content.InventoryContents;
 import life.midorin.info.lifers.menu.inv.content.InventoryProvider;
 import life.midorin.info.lifers.menu.inv.content.Pagination;
 import life.midorin.info.lifers.menu.inv.content.SlotIterator;
+import life.midorin.info.lifers.protect.Protect;
 import life.midorin.info.lifers.user.User;
 import life.midorin.info.lifers.user.UserSet;
 import life.midorin.info.lifers.util.SkullCreator;
@@ -14,10 +15,8 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static org.bukkit.ChatColor.*;
@@ -28,7 +27,7 @@ public class UsersMenu implements InventoryProvider {
             .id("users")
             .provider(new UsersMenu())
             .size(6, 9)
-            .title(DARK_AQUA + "ユーザー")
+            .title(DARK_AQUA + "ユーザーリスト")
             .closeable(true)
             .build();
 
@@ -41,22 +40,7 @@ public class UsersMenu implements InventoryProvider {
 
         for (int i = 0; i < items.length; i++) {
             User user = UserSet.getInstnace().getUser(onlinePlayers.get(i).getUniqueId());
-            items[i] = ClickableItem.of(SkullCreator.itemFromUuid(user.asBukkitPlayer().getUniqueId()), icon -> {
-                icon.displayName  = user.asBukkitPlayer().getName();
-            }, e -> {
-                if(requester.getTeleportRequest() != null && requester.getTeleportRequest().asBukkitPlayer() == user.asBukkitPlayer() ) {
-                    player.sendMessage(RED + "すでにリクエストを送りました。");
-                    return;
-                }
-                player.sendMessage(RED + user.asBukkitPlayer().getName() + GOLD + "にリクエストを送信しました");
-                player.sendMessage(GOLD + "キャンセルするには" + RED + "/tprequest cancel" + GOLD + "を実行してください");
-
-                user.asBukkitPlayer().sendMessage(GOLD + "テレポートの要求を許可するには" + RED + "/tprequest accept" + GOLD + "を実行してください");
-                user.asBukkitPlayer().sendMessage(GOLD + "テレポートの要求を許可するには" + RED + "/tprequest deny" + GOLD + "を実行してください");
-                user.asBukkitPlayer().sendMessage(GOLD + "このテレポートの要求は" + RED + "60" + GOLD + "秒以内に回答してください");
-
-                requester.requestTeleport(user, false);
-            });
+            items[i] = ClickableItem.of(createIconSettings(user.asBukkitPlayer()), e -> requester.requestTeleport(user));
         }
 
         for (int i = 0; i < 6; i += 5)
@@ -92,5 +76,18 @@ public class UsersMenu implements InventoryProvider {
                 i.lore = Collections.singletonList(GRAY  + String.valueOf(pagination.next().getPage() + 1) + " ページ目へいく");
             }, e -> INVENTORY.open(player, pagination.next().getPage())));
         }
+    }
+
+    private Consumer<ClickableItem> createIconSettings(Player player) {
+        List<String> lore = new ArrayList<>();
+
+        lore.add(" ");
+        lore.add(YELLOW + "左クリックでリクエストを送る");
+
+        return i -> {
+            i.basedItemStack = SkullCreator.itemFromUuid(player.getUniqueId());
+            i.displayName = "";
+            i.lore = lore;
+        };
     }
 }
