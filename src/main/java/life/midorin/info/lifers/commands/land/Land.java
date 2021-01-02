@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class Land extends BaseCommand {
     public Land(LifersPlugin plugin) {
-        super(plugin, "land", "", true);
+        super(plugin, "land", null, true);
         child(new LookUp(plugin));
     }
 
