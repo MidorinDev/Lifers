@@ -1,5 +1,6 @@
-package life.midorin.info.lifers.menu.menus.protect;
+package life.midorin.info.lifers.menu.menus.protect.protectlistMenus;
 
+import life.midorin.info.lifers.menu.menus.protect.ProtectSettingsMenu;
 import life.midorin.info.lifers.protect.ProtectManager;
 import life.midorin.info.lifers.menu.inv.ClickableItem;
 import life.midorin.info.lifers.menu.inv.SmartInventory;
@@ -25,35 +26,15 @@ import java.util.function.Consumer;
 
 import static org.bukkit.ChatColor.*;
 
-public class ProtectListMenu implements InventoryProvider {
+public abstract class AbstractProtectListMenu implements InventoryProvider {
 
     private final UUID uuid;
+    private final Consumer<InventoryContents> raw;
 
-    public ProtectListMenu(UUID player) {
-        this.uuid = player;
+    public AbstractProtectListMenu(UUID uuid, Consumer<InventoryContents> raw) {
+        this.uuid = uuid;
+        this.raw = raw;
     }
-
-    public ProtectListMenu() {
-        this.uuid = null;
-    }
-
-    public static SmartInventory INVENTORY(UUID  uuid) {
-         return SmartInventory.builder()
-                 .id("list")
-                .provider(new ProtectListMenu(uuid))
-                .size(6, 9)
-                .title(RED + Bukkit.getOfflinePlayer(uuid).getName() + "の保護されたブロックリスト")
-                .closeable(true)
-                .build();
-    }
-
-    public static final SmartInventory INVENTORY = SmartInventory.builder()
-            .id("list")
-            .provider(new ProtectListMenu())
-            .size(6, 9)
-            .title(RED + "保護されたブロックリスト")
-            .closeable(true)
-            .build();
 
     @Override
     public void init(Player player, InventoryContents contents) {
@@ -88,27 +69,7 @@ public class ProtectListMenu implements InventoryProvider {
 
         pagination.addToIterator(contents.newIterator(SlotIterator.Type.HORIZONTAL, 1, 0).allowOverride(false));
 
-        if(!pagination.isFirst()) {
-            contents.set(5, 0, ClickableItem.of(i -> {
-                i.material = Material.ARROW;
-                i.displayName = GREEN + "前のページ";
-                i.lore = Collections.singletonList(GRAY  + String.valueOf(pagination.previous().getPage() + 1) + " ページ目へいく");
-            }, e -> INVENTORY.open(player, pagination.previous().getPage())));
-        }
-
-        contents.set(5, 4,  ClickableItem.of(i ->{
-            i.material = Material.ARROW;
-            i.displayName = RED + "戻る";
-            i.lore = Collections.singletonList(GRAY  + ChatColor.stripColor(LandMenu.INVENTORY.getTitle())  + "  へ");
-        }, e -> LandMenu.INVENTORY.open(player)));
-
-        if(!pagination.isLast()) {
-            contents.set(5, 8, ClickableItem.of(i -> {
-                i.material = Material.ARROW;
-                i.displayName = GREEN + "次のページ";
-                i.lore = Collections.singletonList(GRAY  + String.valueOf(pagination.next().getPage() + 1) + " ページ目へいく");
-            }, e -> INVENTORY.open(player, pagination.next().getPage())));
-        }
+        raw.accept(contents);
 
     }
 
@@ -123,7 +84,7 @@ public class ProtectListMenu implements InventoryProvider {
         List<String> lore = new ArrayList<>();
 
         lore.add("");
-        if(player.isOp()) {
+        if(player.isOp() && uuid != null) {
             lore.add(GREEN + "右クリックでテレポート");
             lore.add("");
         }

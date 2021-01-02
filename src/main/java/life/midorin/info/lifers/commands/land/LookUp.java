@@ -2,7 +2,9 @@ package life.midorin.info.lifers.commands.land;
 
 import life.midorin.info.lifers.LifersPlugin;
 import life.midorin.info.lifers.command.BaseCommand;
-import life.midorin.info.lifers.menu.menus.protect.ProtectListMenu;
+import life.midorin.info.lifers.menu.inv.SmartInventory;
+import life.midorin.info.lifers.menu.menus.protect.protectlistMenus.AbstractProtectListMenu;
+import life.midorin.info.lifers.menu.menus.protect.protectlistMenus.LookUpMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -21,7 +23,10 @@ public class LookUp extends BaseCommand {
     @Override
     protected void execute(CommandSender sender, String label, String[] args) {
 
-        if (args.length < 2) return;
+        if (args.length < 2) {
+            sender.sendMessage(RED + "プレイヤーを指定しください");
+            return;
+        }
 
         //第1引数をプレイヤー名として取得する
         String playerName = args[1];
@@ -31,11 +36,11 @@ public class LookUp extends BaseCommand {
         UUID uuid = player.getUniqueId();
 
         if (player.getFirstPlayed() == 0) {
-            sender.sendMessage(RED + playerName +"はデータベースに存在しません。");
+            sender.sendMessage(RED + playerName + "はデータベースに存在しません。");
             return;
         }
-
-        ProtectListMenu.INVENTORY(uuid).open((Player) sender);
-
+        LookUpMenu.INVENTORY(uuid, (Player) sender).open((Player) sender);
     }
+
+
 }

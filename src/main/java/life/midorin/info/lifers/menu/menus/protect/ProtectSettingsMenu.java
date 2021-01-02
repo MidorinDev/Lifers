@@ -4,7 +4,9 @@ import life.midorin.info.lifers.menu.inv.ClickableItem;
 import life.midorin.info.lifers.menu.inv.SmartInventory;
 import life.midorin.info.lifers.menu.inv.content.InventoryContents;
 import life.midorin.info.lifers.menu.inv.content.InventoryProvider;
-import life.midorin.info.lifers.menu.menus.land.LandMenu;
+import life.midorin.info.lifers.menu.menus.protect.protectlistMenus.AbstractProtectListMenu;
+import life.midorin.info.lifers.menu.menus.protect.protectlistMenus.LookUpMenu;
+import life.midorin.info.lifers.menu.menus.protect.protectlistMenus.ProtectMenu;
 import life.midorin.info.lifers.protect.Protect;
 import life.midorin.info.lifers.util.Messages;
 import org.bukkit.ChatColor;
@@ -16,6 +18,7 @@ import org.bukkit.material.Dye;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 import static org.bukkit.ChatColor.*;
 
@@ -52,12 +55,12 @@ public class ProtectSettingsMenu implements InventoryProvider {
 
             lore.add(GRAY + "保護で信頼されているプレイヤーのリストを取得します");
 
-            i.material  = Material.SKULL_ITEM;
+            i.material = Material.SKULL_ITEM;
             i.displayName = GREEN + "メンバーリスト";
             i.lore = lore;
         }, e -> ProtectMemberList.INVENTORY(protect).open(player)));
 
-        contents.set(1, 6, ClickableItem.of(new Dye(DyeColor.RED).toItemStack(1),i -> {
+        contents.set(1, 6, ClickableItem.of(new Dye(DyeColor.RED).toItemStack(1), i -> {
             List<String> lore = new ArrayList<>();
 
             lore.add(GRAY + "保護ブロックを解除する");
@@ -66,17 +69,24 @@ public class ProtectSettingsMenu implements InventoryProvider {
 
             i.displayName = RED + "保護ブロックの解除";
             i.lore = lore;
-        },e -> {
+        }, e -> {
             protect.delete();
             player.sendMessage(Messages.PREFIX + RED + "保護を解除しました。");
-            ProtectListMenu.INVENTORY.open(player);
+            ProtectMenu.INVENTORY(player).open(player);
         }));
 
-        contents.set(2, 4,  ClickableItem.of(i ->{
+        contents.set(2, 4, ClickableItem.of(i -> {
             i.material = Material.ARROW;
             i.displayName = RED + "戻る";
-            i.lore = Collections.singletonList(GRAY  + ChatColor.stripColor(ProtectListMenu.INVENTORY.getTitle())  + "  へ");
-        }, e -> ProtectListMenu.INVENTORY.open(player)));
+            i.lore = Collections.singletonList(GRAY + ChatColor.stripColor(ProtectMenu.INVENTORY(player).getTitle()) + "  へ");
+        }, e -> {
+            if (protect.getUuid() == player.getUniqueId().toString()) {
+                ProtectMenu.INVENTORY(player).open(player);
+            } else {
+                LookUpMenu.INVENTORY(UUID.fromString(protect.getUuid()), player).open(player);
+            }
+
+        }));
 
     }
 

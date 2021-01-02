@@ -1,11 +1,12 @@
 package life.midorin.info.lifers.menu.menus.land;
 
+import life.midorin.info.lifers.menu.menus.protect.protectlistMenus.ProtectMenu;
 import life.midorin.info.lifers.protect.ProtectManager;
 import life.midorin.info.lifers.menu.inv.ClickableItem;
 import life.midorin.info.lifers.menu.inv.SmartInventory;
 import life.midorin.info.lifers.menu.inv.content.InventoryContents;
 import life.midorin.info.lifers.menu.inv.content.InventoryProvider;
-import life.midorin.info.lifers.menu.menus.protect.ProtectListMenu;
+import life.midorin.info.lifers.menu.menus.protect.protectlistMenus.AbstractProtectListMenu;
 import life.midorin.info.lifers.util.Messages;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -57,7 +58,7 @@ public class LandMenu implements InventoryProvider {
             i.material = Material.CHEST;
             i.displayName = GREEN + "保護されたブロック";
             i.lore = lore;
-        }, e -> ProtectListMenu.INVENTORY.open(player)));
+        }, e -> ProtectMenu.INVENTORY(player).open(player)));
     }
 
 
