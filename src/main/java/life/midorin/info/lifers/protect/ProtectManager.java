@@ -1,7 +1,7 @@
-package life.midorin.info.lifers.manager;
+package life.midorin.info.lifers.protect;
 
 import com.google.common.collect.ImmutableSet;
-import life.midorin.info.lifers.protect.Protect;
+import life.midorin.info.lifers.manager.DatabaseManager;
 import life.midorin.info.lifers.util.SQLQuery;
 import life.midorin.info.lifers.util.Utils;
 import org.bukkit.Bukkit;
@@ -130,4 +130,21 @@ public class ProtectManager {
                 rs.getInt("id"));
     }
 
+    public List<Protect> getProtected_Blocks(UUID uuid) {
+        List<Protect> ptList = new ArrayList<>();
+
+        try (ResultSet rs = DatabaseManager.get().executeResultStatement(SQLQuery.SELECT_PROTECTED_PLAYER_BLOCK_LIST,uuid))
+        {
+            while (rs.next()) {
+                Protect protect = getLandFromResultSet(rs);
+
+                ptList.add(protect);
+            }
+        } catch (SQLException ex) {
+            Utils.debugSqlException(ex);
+            Utils.log("の土地を取得する際にエラーが発生しました" );
+        }
+
+        return ptList;
+    }
 }

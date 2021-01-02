@@ -1,21 +1,17 @@
 package life.midorin.info.lifers.menu.menus.protect;
 
-import life.midorin.info.lifers.manager.ProtectManager;
+import life.midorin.info.lifers.protect.ProtectManager;
 import life.midorin.info.lifers.menu.inv.ClickableItem;
 import life.midorin.info.lifers.menu.inv.SmartInventory;
 import life.midorin.info.lifers.menu.inv.content.InventoryContents;
 import life.midorin.info.lifers.menu.inv.content.InventoryProvider;
 import life.midorin.info.lifers.menu.inv.content.Pagination;
 import life.midorin.info.lifers.menu.inv.content.SlotIterator;
-import life.midorin.info.lifers.menu.menus.land.LandMenu;
 import life.midorin.info.lifers.protect.Protect;
-import life.midorin.info.lifers.util.Messages;
 import life.midorin.info.lifers.util.SkullCreator;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;

@@ -1,6 +1,6 @@
 package life.midorin.info.lifers.listeners;
 
-import life.midorin.info.lifers.manager.ProtectManager;
+import life.midorin.info.lifers.protect.ProtectManager;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;

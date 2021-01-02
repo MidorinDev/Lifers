@@ -1,8 +1,6 @@
 package life.midorin.info.lifers.protect;
 
 import life.midorin.info.lifers.manager.DatabaseManager;
-import life.midorin.info.lifers.manager.ProtectManager;
-import life.midorin.info.lifers.util.MaterialType;
 import life.midorin.info.lifers.util.SQLQuery;
 import life.midorin.info.lifers.util.Utils;
 import org.bukkit.*;

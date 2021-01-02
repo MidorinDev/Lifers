@@ -1,6 +1,6 @@
 package life.midorin.info.lifers.menu.menus.land;
 
-import life.midorin.info.lifers.manager.ProtectManager;
+import life.midorin.info.lifers.protect.ProtectManager;
 import life.midorin.info.lifers.menu.inv.ClickableItem;
 import life.midorin.info.lifers.menu.inv.SmartInventory;
 import life.midorin.info.lifers.menu.inv.content.InventoryContents;

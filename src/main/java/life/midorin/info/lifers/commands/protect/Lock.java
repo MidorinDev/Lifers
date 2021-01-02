@@ -1,6 +1,6 @@
 package life.midorin.info.lifers.commands.protect;
 
-import life.midorin.info.lifers.manager.ProtectManager;
+import life.midorin.info.lifers.protect.ProtectManager;
 import life.midorin.info.lifers.protect.Protect;
 import life.midorin.info.lifers.util.Messages;
 import org.bukkit.ChatColor;

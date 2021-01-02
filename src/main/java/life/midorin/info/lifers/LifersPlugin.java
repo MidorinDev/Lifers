@@ -57,12 +57,12 @@ public class LifersPlugin extends AbstractLifersPlugin {
 
         //コマンドを登録
         registerCommands(
+                new Land(this),
                 new teleportRequest(this)
         );
 
         getCommand("join").setExecutor(new Join());
         getCommand("leave").setExecutor(new Leave());
-        getCommand("land").setExecutor(new Land());
         getCommand("xyz").setExecutor(new Xyz());
         getCommand("lock").setExecutor(new Lock());
         getCommand("unlock").setExecutor(new unLock());
