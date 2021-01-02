@@ -2,8 +2,6 @@ package life.midorin.info.lifers.commands.land;
 
 import life.midorin.info.lifers.LifersPlugin;
 import life.midorin.info.lifers.command.BaseCommand;
-import life.midorin.info.lifers.menu.inv.SmartInventory;
-import life.midorin.info.lifers.menu.menus.protect.protectlistMenus.AbstractProtectListMenu;
 import life.midorin.info.lifers.menu.menus.protect.protectlistMenus.LookUpMenu;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
