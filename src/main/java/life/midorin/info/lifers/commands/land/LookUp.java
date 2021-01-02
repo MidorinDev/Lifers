@@ -31,7 +31,7 @@ public class LookUp extends BaseCommand {
         UUID uuid = player.getUniqueId();
 
         if (player.getFirstPlayed() == 0) {
-            sender.sendMessage(RED + playerName +"はサーバーに参加した事がありません。");
+            sender.sendMessage(RED + playerName +"はデータベースに存在しません。");
             return;
         }
 
