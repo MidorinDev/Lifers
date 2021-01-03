@@ -24,5 +24,14 @@ jobs:
       with:
         tag_name: action-v${{ github.run_number }}
         files: './staging/*.jar'
+    - uses: sarisia/actions-status-discord@v1
+      if: always()
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        status: ${{ job.status }}
+        description: |
+          [最新のリリース](https://github.com/MidorinDev/Lifers/releases/latest)
+        username: GitHub Actions
+        avatar_url: ${{ secrets.AVATAR_URL }} 
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
