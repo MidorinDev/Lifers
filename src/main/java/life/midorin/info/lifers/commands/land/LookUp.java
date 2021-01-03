@@ -1,6 +1,7 @@
 package life.midorin.info.lifers.commands.land;
 
 import life.midorin.info.lifers.LifersPlugin;
+import life.midorin.info.lifers.command.Arguments;
 import life.midorin.info.lifers.command.BaseCommand;
 import life.midorin.info.lifers.menu.menus.protect.protectlistMenus.LookUpMenu;
 import org.bukkit.Bukkit;
@@ -19,15 +20,15 @@ public class LookUp extends BaseCommand {
     }
 
     @Override
-    protected void execute(CommandSender sender, String label, String[] args) {
+    protected void execute(CommandSender sender, String label, Arguments args) {
 
-        if (args.length < 2) {
+        if (args.getLength() < 2) {
             sender.sendMessage(RED + "プレイヤーを指定しください");
             return;
         }
 
         //第1引数をプレイヤー名として取得する
-        String playerName = args[1];
+        String playerName = args.next();
 
         @SuppressWarnings("deprecation")
         OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);

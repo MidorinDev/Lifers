@@ -2,6 +2,8 @@ package life.midorin.info.lifers;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import jp.jyn.jecon.Jecon;
+import life.midorin.info.lifers.commands.home.HomeCommand;
+import life.midorin.info.lifers.commands.home.SetHome;
 import life.midorin.info.lifers.commands.land.Land;
 import life.midorin.info.lifers.commands.other.Join;
 import life.midorin.info.lifers.commands.other.Leave;
@@ -9,6 +11,7 @@ import life.midorin.info.lifers.commands.other.Xyz;
 import life.midorin.info.lifers.commands.protect.Lock;
 import life.midorin.info.lifers.commands.protect.unLock;
 import life.midorin.info.lifers.commands.teleport.teleportRequest;
+import life.midorin.info.lifers.home.HomeManager;
 import life.midorin.info.lifers.listeners.*;
 import life.midorin.info.lifers.manager.DatabaseManager;
 import life.midorin.info.lifers.menu.inv.InventoryManager;
@@ -41,6 +44,7 @@ public class LifersPlugin extends AbstractLifersPlugin {
         this.invManager.init();
 
         UserSet.load();
+        HomeManager.get().loadAllHomes();
 
         //リスナーを登録
         registerListeners(
@@ -58,7 +62,9 @@ public class LifersPlugin extends AbstractLifersPlugin {
         //コマンドを登録
         registerCommands(
                 new Land(this),
-                new teleportRequest(this)
+                new teleportRequest(this),
+                new HomeCommand(this),
+                new SetHome(this)
         );
 
         getCommand("join").setExecutor(new Join());

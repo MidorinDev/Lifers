@@ -47,6 +47,7 @@ public class DatabaseManager {
 
         executeStatement(SQLQuery.CREATE_TABLE_PROTECTED_BLOCKS);
         executeStatement(SQLQuery.CREATE_TABLE_PROTECTED_BLOCK_MEMBERS);
+        executeStatement(SQLQuery.HOME_CREATE_TABLE);
 
     }
 

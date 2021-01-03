@@ -1,6 +1,8 @@
 package life.midorin.info.lifers.command;
 
 import com.google.common.collect.Lists;
+
+import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashMap;
@@ -133,11 +135,19 @@ public abstract class AbstractCommand<P extends JavaPlugin> implements TabComple
                     return true;
                 }
 
-                child.execute(sender, label, args);
+                try {
+                    child.execute(sender, label, new Arguments(args));
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 return true;
             }
 
-            execute(sender, label, args);
+            try {
+                execute(sender, label, new Arguments(args));
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
             return true;
         });
         pluginCommand.setTabCompleter((sender, command, alias, args) -> {
@@ -183,7 +193,7 @@ public abstract class AbstractCommand<P extends JavaPlugin> implements TabComple
         return name;
     }
 
-    protected abstract void execute(final CommandSender sender, final String label, final String[] args);
+    protected abstract void execute(final CommandSender sender, final String label, final Arguments args) throws SQLException;
 
     protected void handleMessage(final CommandSender sender, final MessageType type, final String... args) {
         sender.sendMessage(type.defaultMessage.format(args));

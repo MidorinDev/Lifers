@@ -22,3 +22,5 @@ commands:
   lifers:
     description: main
   tprequest:
+  sethome:
+  home:

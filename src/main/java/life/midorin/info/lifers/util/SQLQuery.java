@@ -38,6 +38,31 @@ public enum  SQLQuery {
                     "protected_blockId VARCHAR(16)," +
                     "uuid VARCHAR(35))"
     ),
+    HOME_CREATE_TABLE(
+            "CREATE TABLE IF NOT EXISTS Homes (" +
+                    "id INTEGER PRIMARY KEY NOT NULL," +
+                    "name VARCHAR(36) NOT NULL," +
+                    "uniqueId VARCHAR(36) NOT NULL," +
+                    "world VARCHAR(64) NOT NULL," +
+                    "x BIGINT NOT NULL," +
+                    "y BIGINT NOT NULL," +
+                    "z BIGINT NOT NULL," +
+                    "yaw BIGINT NOT NULL," +
+                    "pitch BIGINT NOT NULL," +
+                    ")",
+
+            "CREATE TABLE IF NOT EXISTS Homes (" +
+                    "id INTEGER PRIMARY KEY NOT NULL," +
+                    "name VARCHAR(36) NOT NULL," +
+                    "uniqueId VARCHAR(36) NOT NULL," +
+                    "world VARCHAR(64) NOT NULL," +
+                    "x BIGINT NOT NULL," +
+                    "y BIGINT NOT NULL," +
+                    "z BIGINT NOT NULL," +
+                    "yaw BIGINT NOT NULL," +
+                    "pitch BIGINT NOT NULL" +
+                    ")"
+    ),
     INSERT_PROTECTED_BLOCK(
             "INSERT INTO `Protected_blocks` " +
                     "(`name`, `uuid`, `world`, `x`, `y`, `z`, `materialType`) " +
@@ -55,6 +80,27 @@ public enum  SQLQuery {
             "INSERT INTO Protected_block_Members " +
                     "(protected_BlockId, uuid) " +
                     "VALUES (?, ?)"
+    ),
+    HOME_INSERT_DEFAULT(
+            "INSERT INTO Homes " +
+                    "(name, uniqueId, world, x, y, z, yaw, pitch) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+
+            "INSERT INTO Homes " +
+                    "(name, uniqueId, world, x, y, z, yaw, pitch) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    ),
+    HOME_SELECT_ALL(
+            "SELECT name, uniqueId FROM 'Homes",
+            "SELECT name, uniqueId FROM Homes"
+            ),
+    HOMES_SELECT_ALL_HOME_BY_UUID_NAME(
+            "SELECT * FROM Homes WHERE uniqueId = ? AND name = ?",
+            "SELECT * FROM Homes WHERE uniqueId = ? AND name = ?"
+    ),
+    HOMES_SELECT_ALL_HOME_BY_UUID(
+            "SELECT * FROM Homes WHERE uniqueId = ?",
+            "SELECT * FROM Homes WHERE uniqueId = ?"
     ),
     SELECT_EXACT_PROTECTED_BLOCK(
             "SELECT * FROM `Protected_blocks` WHERE `uuid` = ? AND `materialType` = ? AND `world` = ? AND `x` = ? AND `y` = ? AND `z` = ?",
@@ -86,6 +132,7 @@ public enum  SQLQuery {
 
                     "DELETE FROM Protected_block_Members WHERE protected_blockId = ?"
     );
+
 
     private String mysql;
     private String sqlite;
