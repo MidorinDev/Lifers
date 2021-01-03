@@ -102,6 +102,10 @@ public enum  SQLQuery {
             "SELECT * FROM Homes WHERE uniqueId = ?",
             "SELECT * FROM Homes WHERE uniqueId = ?"
     ),
+    HOME_DELETE(
+      "DELETE FROM Homes WHERE id = ?",
+            "DELETE FROM Homes WHERE id = ?"
+    ),
     SELECT_EXACT_PROTECTED_BLOCK(
             "SELECT * FROM `Protected_blocks` WHERE `uuid` = ? AND `materialType` = ? AND `world` = ? AND `x` = ? AND `y` = ? AND `z` = ?",
 

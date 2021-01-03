@@ -32,7 +32,7 @@ public class HomeCommand extends BaseCommand {
 
         Home home = HomeManager.get().loadHome(player, homeName).orElse(null);
         if (home == null) {
-            sender.sendMessage(RED + "存在しません");
+            sender.sendMessage(RED + homeName + "は存在しません");
             return;
         }
 

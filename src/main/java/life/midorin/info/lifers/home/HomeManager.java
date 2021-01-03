@@ -54,6 +54,10 @@ public class HomeManager {
         this.homes = selectHomes();
     }
 
+    public void deleteHome(Home home) {
+        DatabaseManager.get().executeStatement(SQLQuery.HOME_DELETE, home.getId());
+    }
+
     private Map<String,List<Home>> selectHomes() {
         Map<String, List<Home>> homes = new HashMap<>();
 

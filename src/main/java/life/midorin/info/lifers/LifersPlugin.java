@@ -4,6 +4,7 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import jp.jyn.jecon.Jecon;
 import life.midorin.info.lifers.commands.home.HomeCommand;
 import life.midorin.info.lifers.commands.home.SetHome;
+import life.midorin.info.lifers.commands.home.DelHome;
 import life.midorin.info.lifers.commands.land.Land;
 import life.midorin.info.lifers.commands.other.Join;
 import life.midorin.info.lifers.commands.other.Leave;
@@ -64,7 +65,8 @@ public class LifersPlugin extends AbstractLifersPlugin {
                 new Land(this),
                 new teleportRequest(this),
                 new HomeCommand(this),
-                new SetHome(this)
+                new SetHome(this),
+                new DelHome(this)
         );
 
         getCommand("join").setExecutor(new Join());

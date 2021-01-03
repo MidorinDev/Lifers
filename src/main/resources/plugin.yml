@@ -24,3 +24,4 @@ commands:
   tprequest:
   sethome:
   home:
+  delhome:
