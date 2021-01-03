@@ -42,8 +42,7 @@ public class HomeManager {
 
     public Optional<Home> loadHome(Player player, String name) {
         loadAllHomes();
-
-        Home home = homes.get(player.getUniqueId().toString()).stream().filter(findHome -> findHome.getName().equals(name)).findFirst().orElse(null);
+        Home home = getPlayerHome(player.getUniqueId(), name);
 
         if (home == null) {
             return Optional.empty();
