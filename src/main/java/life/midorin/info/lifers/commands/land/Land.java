@@ -1,8 +1,8 @@
 package life.midorin.info.lifers.commands.land;
 
 import life.midorin.info.lifers.LifersPlugin;
-import life.midorin.info.lifers.command.Arguments;
-import life.midorin.info.lifers.command.BaseCommand;
+import life.midorin.info.lifers.command.spec.Arguments;
+import life.midorin.info.lifers.command.abstraction.BaseCommand;
 import life.midorin.info.lifers.menu.menus.land.LandMenu;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;

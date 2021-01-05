@@ -1,4 +1,4 @@
-package life.midorin.info.lifers.command;
+package life.midorin.info.lifers.command.abstraction;
 
 import java.util.Objects;
 
@@ -14,17 +14,6 @@ public abstract class SubCommand {
     private final int length;
     private final String[] aliases;
 
-    /**
-     * サブコマンドのコンストラクタ
-     *
-     * @param name このサブコマンドの名前。nullにしてはいけません!!
-     * @param usage このサブコマンドの使用法。nullも可。
-     * @param description このサブコマンドの説明。nullも可。
-     * @param permission このサブコマンドの許可。nullも可。
-     * @param playerOnly このサブコマンドをプレイヤーのみにするかどうか。
-     * @param length このサブコマンドの長さ。1以上でなければなりません。
-     * @param aliases このサブコマンドのエイリアス。
-     */
     public SubCommand(@NonNull final String name, @Nullable final String usage, @Nullable final String description, @Nullable final String permission,
                       final boolean playerOnly, final int length, final String... aliases) {
         Objects.requireNonNull(name, "name");

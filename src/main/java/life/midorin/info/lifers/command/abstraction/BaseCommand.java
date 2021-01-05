@@ -1,4 +1,4 @@
-package life.midorin.info.lifers.command;
+package life.midorin.info.lifers.command.abstraction;
 
 import life.midorin.info.lifers.LifersPlugin;
 import org.bukkit.command.CommandSender;

@@ -7,7 +7,7 @@ import java.util.List;
 
 public enum CommandSpec {
 
-    PROTECT("/%s protect <args>");
+    /*PROTECT("/%s protect <args>");
 
     private final String usage;
     private final List<Argument> args;
@@ -35,7 +35,7 @@ public enum CommandSpec {
         return this.usage;
     }
 
-    public List<Argument> args() {
+    //public List<Argument> args() {
         return this.args;
     }
 
@@ -61,6 +61,6 @@ public enum CommandSpec {
             this.name = name;
             this.required = required;
         }
-    }
+    }*/
 
 }

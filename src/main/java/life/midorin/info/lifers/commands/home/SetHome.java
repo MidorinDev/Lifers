@@ -1,9 +1,8 @@
 package life.midorin.info.lifers.commands.home;
 
 import life.midorin.info.lifers.LifersPlugin;
-import life.midorin.info.lifers.command.Arguments;
-import life.midorin.info.lifers.command.BaseCommand;
-import life.midorin.info.lifers.home.Home;
+import life.midorin.info.lifers.command.spec.Arguments;
+import life.midorin.info.lifers.command.abstraction.BaseCommand;
 import life.midorin.info.lifers.home.HomeManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

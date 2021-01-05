@@ -61,7 +61,7 @@ public class PlayerInteract implements Listener {
         final Protect protect = ProtectManager.get().getProtected_Block(block.getLocation());
         final ItemStack held = player.getInventory().getItemInMainHand();
 
-        if(protect.isOwner(player.getName()) && e.getHand().equals(EquipmentSlot.HAND ) || protect.isAccess(player.getUniqueId().toString())) {
+        if(protect.isAccess(player.getUniqueId().toString()) || protect.isOwner(player.getName())) {
 
             if (!(block.getType() != Material.IRON_DOOR_BLOCK || block.getType() != Material.IRON_TRAPDOOR)) return;
 

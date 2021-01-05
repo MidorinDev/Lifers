@@ -1,8 +1,8 @@
 package life.midorin.info.lifers.commands.teleport;
 
 import life.midorin.info.lifers.LifersPlugin;
-import life.midorin.info.lifers.command.Arguments;
-import life.midorin.info.lifers.command.BaseCommand;
+import life.midorin.info.lifers.command.spec.Arguments;
+import life.midorin.info.lifers.command.abstraction.BaseCommand;
 import life.midorin.info.lifers.menu.menus.user.UsersMenu;
 import life.midorin.info.lifers.user.User;
 import life.midorin.info.lifers.user.UserSet;

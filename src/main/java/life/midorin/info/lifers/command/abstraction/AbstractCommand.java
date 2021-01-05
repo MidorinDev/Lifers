@@ -1,4 +1,4 @@
-package life.midorin.info.lifers.command;
+package life.midorin.info.lifers.command.abstraction;
 
 import com.google.common.collect.Lists;
 
@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import life.midorin.info.lifers.command.spec.Arguments;
 import org.bukkit.command.*;
 import org.bukkit.plugin.java.JavaPlugin;
 

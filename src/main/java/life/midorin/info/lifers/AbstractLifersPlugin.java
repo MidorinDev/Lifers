@@ -1,7 +1,6 @@
 package life.midorin.info.lifers;
 
-import life.midorin.info.lifers.command.AbstractCommand;
-import org.bukkit.command.CommandSender;
+import life.midorin.info.lifers.command.abstraction.AbstractCommand;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -9,7 +8,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class AbstractLifersPlugin extends JavaPlugin implements Listener {
 
@@ -40,25 +38,6 @@ public class AbstractLifersPlugin extends JavaPlugin implements Listener {
         }
         return configFile;
     }
-
-    /*public boolean registerSubCommand(@NonNull final String command, @NonNull final SubCommand subCommand) {
-        Objects.requireNonNull(command, "command");
-        Objects.requireNonNull(subCommand, "subCommand");
-
-        final AbstractCommand<ServerGatePlugins> result = commands.get(command.toLowerCase());
-
-        if (result == null || result.isChild(subCommand.getName().toLowerCase())) {
-            return false;
-        }
-
-        result.child(new AbstractCommand<ServerGatePlugins>(ServerGatePlugins.getPlugin(), subCommand) {
-            @Override
-            protected void execute(final CommandSender sender, final String label, final String[] args) {
-                subCommand.execute(sender, label, args);
-            }
-        });
-        return true;
-    }*/
 
     protected void registerListeners(Listener... listeners){
         for(Listener listener : listeners){

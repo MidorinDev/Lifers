@@ -1,4 +1,4 @@
-package life.midorin.info.lifers.command;
+package life.midorin.info.lifers.command.spec;
 
 import java.util.function.Consumer;
 
