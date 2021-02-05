@@ -1,0 +1,26 @@
+name: Lifers
+version: ${project.version}
+main: life.midorin.info.lifers.LifersPlugin
+
+commands:
+  land:
+    description: 土地管理システム
+    aliases:
+      - l
+      - lands
+  xyz:
+    description: 座標を取得するコマンド
+  lock:
+    description: Lock
+  unlock:
+    description: unLock
+  join:
+    description: Private
+  leave:
+    description: Private
+  lifers:
+    description: main
+  tprequest:
+  sethome:
+  home:
+  delhome:

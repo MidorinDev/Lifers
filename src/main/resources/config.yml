@@ -1,0 +1,9 @@
+UseMySQL: false
+
+MySQL:
+  IP: localhost
+  DB-Name: database-name
+  Username: admin
+  Password: 'superSecret'
+  Port: 3306
+  Properties: 'verifyServerCertificate=false&useSSL=false&useUnicode=true&characterEncoding=utf8'

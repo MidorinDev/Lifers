@@ -1,0 +1,153 @@
+package life.midorin.info.lifers.util;
+
+import life.midorin.info.lifers.manager.DatabaseManager;
+
+public enum  SQLQuery {
+
+    CREATE_TABLE_PROTECTED_BLOCKS(
+            "CREATE TABLE IF NOT EXISTS `Protected_blocks` ("+
+                    "`id` int NOT NULL AUTO_INCREMENT," +
+                    "`name` VARCHAR(16) NULL DEFAULT NULL," +
+                    "`uuid` VARCHAR(35) NULL DEFAULT NULL," +
+                    "`world` VARCHAR(16) NULL DEFAULT NULL," +
+                    "`x` BIGINT," +
+                    "`y` BIGINT," +
+                    "`z` BIGINT," +
+                    "`materialType` VARCHAR(16) NULL DEFAULT NULL," +
+                    "PRIMARY KEY (`id`))",
+
+            "CREATE TABLE IF NOT EXISTS Protected_blocks (" +
+                    "id INTEGER PRIMARY KEY," +
+                    "name VARCHAR(16)," +
+                    "uuid VARCHAR(35)," +
+                    "world VARCHAR(16)," +
+                    "x BIGINT," +
+                    "y BIGINT," +
+                    "z BIGINT," +
+                    "materialType VARCHAR(16))"
+    ),
+    CREATE_TABLE_PROTECTED_BLOCK_MEMBERS(
+            "CREATE TABLE IF NOT EXISTS `Protected_block_Members` ("+
+                    "`id` int NOT NULL AUTO_INCREMENT," +
+                    "`protected_blockId` VARCHAR(16) NULL DEFAULT NULL," +
+                    "`uuid` VARCHAR(35) NULL DEFAULT NULL," +
+                    "PRIMARY KEY (`id`))",
+
+            "CREATE TABLE IF NOT EXISTS Protected_block_Members (" +
+                    "id INTEGER PRIMARY KEY," +
+                    "protected_blockId VARCHAR(16)," +
+                    "uuid VARCHAR(35))"
+    ),
+    HOME_CREATE_TABLE(
+            "CREATE TABLE IF NOT EXISTS Homes (" +
+                    "id INTEGER PRIMARY KEY NOT NULL," +
+                    "name VARCHAR(36) NOT NULL," +
+                    "uniqueId VARCHAR(36) NOT NULL," +
+                    "world VARCHAR(64) NOT NULL," +
+                    "x BIGINT NOT NULL," +
+                    "y BIGINT NOT NULL," +
+                    "z BIGINT NOT NULL," +
+                    "yaw BIGINT NOT NULL," +
+                    "pitch BIGINT NOT NULL," +
+                    ")",
+
+            "CREATE TABLE IF NOT EXISTS Homes (" +
+                    "id INTEGER PRIMARY KEY NOT NULL," +
+                    "name VARCHAR(36) NOT NULL," +
+                    "uniqueId VARCHAR(36) NOT NULL," +
+                    "world VARCHAR(64) NOT NULL," +
+                    "x BIGINT NOT NULL," +
+                    "y BIGINT NOT NULL," +
+                    "z BIGINT NOT NULL," +
+                    "yaw BIGINT NOT NULL," +
+                    "pitch BIGINT NOT NULL" +
+                    ")"
+    ),
+    INSERT_PROTECTED_BLOCK(
+            "INSERT INTO `Protected_blocks` " +
+                    "(`name`, `uuid`, `world`, `x`, `y`, `z`, `materialType`) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)",
+
+            "INSERT INTO Protected_blocks " +
+                    "(name, uuid, world, x, y, z, materialType) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)"
+    ),
+    INSERT_PROTECTED_BLOCK_MEMBER(
+            "INSERT INTO `Protected_blocks_Members` " +
+                    "(`protected_BlockId`, `uuid`) " +
+                    "VALUES (?, ?)",
+
+            "INSERT INTO Protected_block_Members " +
+                    "(protected_BlockId, uuid) " +
+                    "VALUES (?, ?)"
+    ),
+    HOME_INSERT_DEFAULT(
+            "INSERT INTO Homes " +
+                    "(name, uniqueId, world, x, y, z, yaw, pitch) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+
+            "INSERT INTO Homes " +
+                    "(name, uniqueId, world, x, y, z, yaw, pitch) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+    ),
+    HOME_SELECT_ALL(
+            "SELECT name, uniqueId FROM 'Homes",
+            "SELECT name, uniqueId FROM Homes"
+            ),
+    HOMES_SELECT_ALL_HOME_BY_UUID_NAME(
+            "SELECT * FROM Homes WHERE uniqueId = ? AND name = ?",
+            "SELECT * FROM Homes WHERE uniqueId = ? AND name = ?"
+    ),
+    HOMES_SELECT_ALL_HOME_BY_UUID(
+            "SELECT * FROM Homes WHERE uniqueId = ?",
+            "SELECT * FROM Homes WHERE uniqueId = ?"
+    ),
+    HOME_DELETE(
+      "DELETE FROM Homes WHERE id = ?",
+            "DELETE FROM Homes WHERE id = ?"
+    ),
+    SELECT_EXACT_PROTECTED_BLOCK(
+            "SELECT * FROM `Protected_blocks` WHERE `uuid` = ? AND `materialType` = ? AND `world` = ? AND `x` = ? AND `y` = ? AND `z` = ?",
+
+            "SELECT * FROM Protected_blocks WHERE uuid = ? AND materialType = ? AND world = ? AND x = ? AND y = ? AND z = ?"
+    ),
+    SELECT_PROTECTED_BLOCK(
+            "SELECT * FROM `Protected_blocks` WHERE `world` = ? AND `x` = ? AND `y` = ? AND `z` = ?",
+
+            "SELECT * FROM Protected_blocks WHERE world = ? AND x = ? AND y = ? AND z = ?"
+    ),
+    SELECT_PROTECTED_BLOCK_MEMBERS(
+            "SELECT * FROM `Protected_block_Members` WHERE `protected_blockId` = ?",
+
+                    "SELECT * FROM Protected_block_Members WHERE protected_blockId = ?"
+    ),
+    SELECT_PROTECTED_PLAYER_BLOCK_LIST(
+            "SELECT * FROM `Protected_blocks` WHERE `uuid` = ?",
+
+            "SELECT * FROM Protected_blocks WHERE uuid = ?"
+    ),
+    DELETE_PROTECTED_BLOCK(
+            "DELETE FROM `Protected_blocks` WHERE `id` = ?",
+
+            "DELETE FROM Protected_blocks WHERE id = ?"
+    ),
+    DELETE_PROTECTED_BLOCK_MEMBERS(
+            "DELETE FROM `Protected_block_Members` WHERE `protected_blockId` = ?",
+
+                    "DELETE FROM Protected_block_Members WHERE protected_blockId = ?"
+    );
+
+
+    private String mysql;
+    private String sqlite;
+
+    SQLQuery(String mysql, String sqlite) {
+        this.mysql = mysql;
+        this.sqlite = sqlite;
+    }
+
+    @Override
+    public String toString() {
+        return DatabaseManager.get().isUseMySQL() ? mysql : sqlite;
+    }
+}
