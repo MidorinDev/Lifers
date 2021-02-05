@@ -34,7 +34,7 @@ public class LookUp extends BaseCommand {
         OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
         UUID uuid = player.getUniqueId();
 
-        if (player.getFirstPlayed() == 0) {
+        if (player.getFirstPlayed() == 1) {
             sender.sendMessage(RED + playerName + "はデータベースに存在しません。");
             return;
         }
