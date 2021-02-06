@@ -23,7 +23,7 @@ public class LookUp extends BaseCommand {
     protected void execute(CommandSender sender, String label, Arguments args) {
 
         if (args.getLength() < 2) {
-            sender.sendMessage(RED + "プレイヤーを指定しください");
+            sender.sendMessage(RED + "プレイヤーを指定してください");
             return;
         }
 
