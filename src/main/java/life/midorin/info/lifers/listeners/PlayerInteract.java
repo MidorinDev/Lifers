@@ -4,6 +4,7 @@ import life.midorin.info.lifers.protect.ProtectManager;
 import life.midorin.info.lifers.protect.Protect;
 import life.midorin.info.lifers.util.Messages;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -61,7 +62,7 @@ public class PlayerInteract implements Listener {
         final Protect protect = ProtectManager.get().getProtected_Block(block.getLocation());
         final ItemStack held = player.getInventory().getItemInMainHand();
 
-        if(protect.isAccess(player.getUniqueId().toString()) || protect.isOwner(player)) {
+        if(protect.isAccess(player.getUniqueId().toString()) || protect.isOwner(player) || player.isOp() || player.getGameMode().equals(GameMode.SPECTATOR)) {
 
             if (!(block.getType() != Material.IRON_DOOR_BLOCK || block.getType() != Material.IRON_TRAPDOOR)) return;
 
