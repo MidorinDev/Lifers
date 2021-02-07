@@ -13,6 +13,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.material.Dye;
 
 import java.util.ArrayList;
@@ -54,8 +55,7 @@ public class ProtectSettingsMenu implements InventoryProvider {
             List<String> lore = new ArrayList<>();
 
             lore.add(GRAY + "保護で信頼されているプレイヤーのリストを取得します");
-
-            i.material = Material.SKULL_ITEM;
+            i.material = Material.LEATHER_CHESTPLATE;
             i.displayName = GREEN + "メンバーリスト";
             i.lore = lore;
         }, e -> ProtectMemberList.INVENTORY(protect).open(player)));

@@ -4,6 +4,7 @@ import life.midorin.info.lifers.LifersPlugin;
 import life.midorin.info.lifers.command.spec.Arguments;
 import life.midorin.info.lifers.command.abstraction.BaseCommand;
 import life.midorin.info.lifers.menu.menus.protect.protectlistMenus.LookUpMenu;
+import life.midorin.info.lifers.protect.ProtectManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -15,30 +16,41 @@ import static org.bukkit.ChatColor.RED;
 
 public class LookUp extends BaseCommand {
 
+    private ProtectManager protectManager = ProtectManager.get();
+
     public LookUp(LifersPlugin plugin) {
         super(plugin, "lookup", "lifers.lookup", true);
     }
 
     @Override
     protected void execute(CommandSender sender, String label, Arguments args) {
+        if (args.getLength() >= 2) {
+            //第1引数をプレイヤー名として取得する
+            String playerName = args.getRange(1,2);
 
-        if (args.getLength() < 2) {
-            sender.sendMessage(RED + "プレイヤーを指定してください");
+            @SuppressWarnings("deprecation")
+            OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
+            UUID uuid = player.getUniqueId();
+
+            if (player.getFirstPlayed() == 0) {
+                sender.sendMessage(RED + playerName + "はデータベースに存在しません。");
+                return;
+            }
+            LookUpMenu.INVENTORY(uuid, (Player) sender).open((Player) sender);
             return;
         }
 
-        //第1引数をプレイヤー名として取得する
-        String playerName = args.getRange(1,2);
+        Player playerSender = (Player) sender;
 
-        @SuppressWarnings("deprecation")
-        OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
-        UUID uuid = player.getUniqueId();
-
-        if (player.getFirstPlayed() == 0) {
-            sender.sendMessage(RED + playerName + "はデータベースに存在しません。");
-            return;
+        if (protectManager.hasLook(playerSender.getUniqueId())) {
+            protectManager.clearSelection(playerSender);
+        } else {
+            protectManager.setNewLook(playerSender.getUniqueId());
         }
-        LookUpMenu.INVENTORY(uuid, (Player) sender).open((Player) sender);
+
+        return;
+
+
     }
 
 

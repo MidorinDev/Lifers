@@ -19,6 +19,7 @@ public class ProtectManager {
 
     private static ProtectManager instance = null;
     private final Set<OfflinePlayer> players = Collections.synchronizedSet(new HashSet<>());
+    private final Set<UUID> lookingPlayers = new HashSet<>();
     private final Set<String> cached = Collections.synchronizedSet(new HashSet<>());
     public  static final Set<Material> PROTECTABLE_MATERIALS;
 
@@ -45,6 +46,20 @@ public class ProtectManager {
                 Material.FURNACE
         ));
     }
+
+    //新しいセレクションを作成する
+    public void setNewLook(UUID uuid){
+        lookingPlayers.add(uuid);
+    }
+
+    public boolean hasLook(UUID uuid){
+        return lookingPlayers.contains(uuid);
+    }
+
+    //クリアする
+    	public void clearSelection(Player player){
+    		lookingPlayers.remove(player.getUniqueId());
+    	}
 
     public Protect getProtected_Block(Location location) {
         List<Protect> protects = getProtected_Blocks(location);

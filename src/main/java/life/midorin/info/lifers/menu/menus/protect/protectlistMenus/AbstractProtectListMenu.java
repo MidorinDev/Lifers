@@ -15,14 +15,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static org.bukkit.ChatColor.*;
 
@@ -40,7 +39,11 @@ public abstract class AbstractProtectListMenu implements InventoryProvider {
     public void init(Player player, InventoryContents contents) {
         Pagination pagination = contents.pagination();
 
+
+
         List<Protect> test = this.uuid != null ? ProtectManager.get().getProtected_Blocks(this.uuid) : ProtectManager.get().getProtected_Blocks(player);
+        Comparator<Protect> comparator = Comparator.comparing(protect -> protect.getBlock().getType());
+        test = test.stream().sorted(comparator).collect(Collectors.toList());
         ClickableItem[] items = new ClickableItem[test.size()];
 
         for (int i = 0; i < items.length; i++) {
@@ -142,4 +145,9 @@ public abstract class AbstractProtectListMenu implements InventoryProvider {
             i.lore = lore;
         };
     }
+
+    public enum ProtectListCompareMethod {
+        ByChests, Sort
+    }
+
 }

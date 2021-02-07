@@ -3,10 +3,8 @@ package life.midorin.info.lifers.listeners;
 import life.midorin.info.lifers.protect.ProtectManager;
 import life.midorin.info.lifers.protect.Protect;
 import life.midorin.info.lifers.util.Messages;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import life.midorin.info.lifers.util.NameFetcher;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -20,7 +18,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Door;
 import org.bukkit.material.TrapDoor;
 
+import java.util.UUID;
+
+import static org.bukkit.ChatColor.*;
+
 public class PlayerInteract implements Listener {
+
+    private final ProtectManager protectManager = ProtectManager.get();
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
@@ -57,7 +61,7 @@ public class PlayerInteract implements Listener {
         }
 
         //保護されているブロックか？
-        if(!ProtectManager.get().isProtect(block.getLocation())) return;
+        if(!protectManager.isProtect(block.getLocation())) return;
 
         final Protect protect = ProtectManager.get().getProtected_Block(block.getLocation());
         final ItemStack held = player.getInventory().getItemInMainHand();
@@ -112,6 +116,30 @@ public class PlayerInteract implements Listener {
         player.sendMessage(Messages.PREFIX + ChatColor.RED + "所有者以外または使用許可されていないプレイヤーは使うことができません");
         e.setCancelled(true);
 
+    }
+
+    @EventHandler
+    public void setLook(PlayerInteractEvent event){
+        Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
+        Location location = event.getClickedBlock().getLocation();
+
+        Action action = event.getAction();
+
+        //ブロックをクリックしていなければ戻る
+        if(action == Action.RIGHT_CLICK_AIR || action == Action.LEFT_CLICK_AIR || action == Action.PHYSICAL) return;
+
+        if(!protectManager.hasLook(uuid)) return;
+
+        if(!protectManager.isProtect(location)) return;
+
+        Protect protect = protectManager.getProtected_Block(location);
+
+        player.sendMessage(new String[]{
+                GREEN + NameFetcher.getName(protect.getUuid())
+        });
+
+        event.setCancelled(true);
     }
 
 }
